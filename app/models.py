@@ -3,12 +3,13 @@ from typing import Optional
 
 import sqlalchemy as sa
 import sqlalchemy.orm as so
+from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from app import db
+from app import db, login
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     """Represents the User schema in the database.
     Each user is unique.
     """
@@ -48,3 +49,13 @@ class Post(db.Model):
     def __repr__(self) -> str:
         """String representation of a Post object."""
         return f"<Post {self.body}>"
+
+
+@login.user_loader
+def load_user(id: str) -> User | None:
+    """Callback used by flask-login to reload a user object from the user
+    ID stored in the session.
+
+    Returns the corresponding User object or None if the user does not exist.
+    """
+    return db.session.get(User, int(id))

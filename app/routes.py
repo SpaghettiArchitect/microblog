@@ -1,15 +1,20 @@
-from flask import Response, flash, redirect, render_template, url_for
+from urllib.parse import urlsplit
 
-from app import app
+import sqlalchemy as sa
+from flask import Response, flash, redirect, render_template, request, url_for
+from flask_login import current_user, login_required, login_user, logout_user
+
+from app import app, db
 from app.forms import LoginForm
+from app.models import User
 
 
 @app.route("/")
 @app.route("/index")
+@login_required
 def index() -> str:
     """Render the home page for Microblog."""
     # Mock objects to model some functionality of the site.
-    user = {"username": "Spaghetti"}
     posts = [
         {
             "author": {"username": "John"},
@@ -23,21 +28,44 @@ def index() -> str:
 
     return render_template(
         "index.html",
-        title="Home",
-        user=user,
+        title="Home Page",
         posts=posts,
     )
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login() -> Response | str:
-    """Render and validate the data on the login form."""
+    """Render and validate the data on the login form.
+
+    If the data for the user and their password is correct, logs the user in.
+    """
+    if current_user.is_authenticated:
+        return redirect(url_for("index"))
+
     form = LoginForm()
 
     if form.validate_on_submit():
-        flash(
-            f"Login requested for user {form.username.data}, remember_me={form.remember_me.data}"
+        user = db.session.scalar(
+            sa.select(User).where(User.username == form.username.data)
         )
-        return redirect(url_for("index"))
+
+        if user is None or not user.check_password(form.password.data):
+            flash("Invalid username or password")
+            return redirect(url_for("login"))
+
+        login_user(user, remember=form.remember_me.data)
+
+        next_page = request.args.get("next")
+        if not next_page or urlsplit(next_page).netloc != "":
+            next_page = url_for("index")
+
+        return redirect(next_page)
 
     return render_template("login.html", title="Sign In", form=form)
+
+
+@app.route("/logout")
+def logout() -> Response:
+    """Logs out the current user, and redirects to the index page."""
+    logout_user()
+    return redirect(url_for("index"))
