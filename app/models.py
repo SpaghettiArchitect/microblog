@@ -3,6 +3,7 @@ from typing import Optional
 
 import sqlalchemy as sa
 import sqlalchemy.orm as so
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from app import db
 
@@ -19,8 +20,17 @@ class User(db.Model):
 
     posts: so.WriteOnlyMapped["Post"] = so.relationship(back_populates="author")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """String representation of a User object."""
         return f"<User {self.username}>"
+
+    def set_password(self, password: str) -> None:
+        """Set the password_hash stored in this instance."""
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password: str) -> bool:
+        """Check that the password matches the hash previosly stored."""
+        return check_password_hash(self.password_hash, password)
 
 
 class Post(db.Model):
@@ -35,5 +45,6 @@ class Post(db.Model):
 
     author: so.Mapped[User] = so.relationship(back_populates="posts")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """String representation of a Post object."""
         return f"<Post {self.body}>"
