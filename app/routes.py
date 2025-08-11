@@ -92,3 +92,17 @@ def register():
         return redirect(url_for("login"))
 
     return render_template("register.html", title="Register", form=form)
+
+
+@app.route("/user/<username>")
+@login_required
+def user(username: str):
+    """Renders the user's profile page."""
+    user = db.first_or_404(sa.select(User).where(User.username == username))
+    # Mock posts for now; delete after the functionality is implemented.
+    posts = [
+        {"author": user, "body": "Test post #1"},
+        {"author": user, "body": "Test post #2"},
+    ]
+
+    return render_template("user.html", user=user, posts=posts)
