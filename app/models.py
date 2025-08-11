@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from hashlib import md5
 from typing import Optional
 
 import sqlalchemy as sa
@@ -32,6 +33,14 @@ class User(UserMixin, db.Model):
     def check_password(self, password: str) -> bool:
         """Check that the password matches the hash previosly stored."""
         return check_password_hash(self.password_hash, password)
+
+    def avatar(self, size):
+        """Get the URL for a unique profile picture for the user using
+        the Gravatar service.
+        """
+        digest = md5(self.email.lower().encode("utf-8")).hexdigest()
+        request = f"{digest}?d=retro&s={size}"
+        return f"https://www.gravatar.com/avatar/{request}"
 
 
 class Post(db.Model):
