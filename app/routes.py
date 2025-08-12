@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from urllib.parse import urlsplit
 
 import sqlalchemy as sa
@@ -72,7 +73,7 @@ def logout() -> Response:
 
 
 @app.route("/register", methods=["GET", "POST"])
-def register():
+def register() -> Response | str:
     """Render and validate the data on the register form.
 
     If the data provided is valid, creates a new user in the database
@@ -96,7 +97,7 @@ def register():
 
 @app.route("/user/<username>")
 @login_required
-def user(username: str):
+def user(username: str) -> str:
     """Renders the user's profile page."""
     user = db.first_or_404(sa.select(User).where(User.username == username))
     # Mock posts for now; delete after the functionality is implemented.
@@ -106,3 +107,11 @@ def user(username: str):
     ]
 
     return render_template("user.html", user=user, posts=posts)
+
+
+@app.before_request
+def before_request():
+    """Callback function that is run before each new request is processed."""
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.now(timezone.utc)
+        db.session.commit()
