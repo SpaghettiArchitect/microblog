@@ -13,3 +13,8 @@ dependencies = [
     "flask-wtf>=1.2.2",
     "python-dotenv>=1.1.1",
 ]
+
+[dependency-groups]
+dev = [
+    "aiosmtpd>=1.4.6",
+]
