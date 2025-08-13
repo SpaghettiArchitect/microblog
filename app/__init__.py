@@ -12,4 +12,4 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = "login"
 
-from app import models, routes  # noqa: E402, F401
+from app import errors, models, routes  # noqa: E402, F401
