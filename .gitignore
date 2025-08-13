@@ -14,3 +14,7 @@ wheels/
 
 # Secrets
 *.env
+
+# Flask logs
+logs/*
+!logs/.gitkeep
