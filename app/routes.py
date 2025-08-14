@@ -11,7 +11,7 @@ from app.models import User
 
 
 @app.before_request
-def before_request():
+def before_request() -> None:
     """Callback function that is run before each new request is processed."""
     if current_user.is_authenticated:
         current_user.last_seen = datetime.now(timezone.utc)
@@ -119,9 +119,9 @@ def user(username: str) -> str:
 
 @app.route("/edit_profile", methods=["GET", "POST"])
 @login_required
-def edit_profile():
+def edit_profile() -> Response | str:
     """Render or process the form to edit the user's profile page."""
-    form = EditProfileForm()
+    form = EditProfileForm(current_user.username)
 
     # Saves the changes to the database if the form is correct.
     if form.validate_on_submit():
