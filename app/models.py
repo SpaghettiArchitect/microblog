@@ -82,6 +82,35 @@ class User(UserMixin, db.Model):
         request = f"{digest}?d=retro&s={size}"
         return f"https://www.gravatar.com/avatar/{request}"
 
+    def follow(self, user: "User") -> None:
+        """Follow the given user if not already following them."""
+        if not self.is_following(user):
+            self.following.add(user)
+
+    def unfollow(self, user: "User") -> None:
+        """Unfollow the given user if currently following them."""
+        if self.is_following(user):
+            self.following.remove(user)
+
+    def is_following(self, user: "User") -> bool:
+        """Check if the current user is following the given user."""
+        query = self.following.select().where(User.id == user.id)
+        return db.session.scalar(query) is not None
+
+    def followers_count(self) -> int | None:
+        """Return the number of users following the current user."""
+        query = sa.select(sa.func.count()).select_from(
+            self.followers.select().subquery()
+        )
+        return db.session.scalar(query)
+
+    def following_count(self) -> int | None:
+        """Return the number of users the current user is following."""
+        query = sa.select(sa.func.count()).select_from(
+            self.following.select().subquery()
+        )
+        return db.session.scalar(query)
+
 
 class Post(db.Model):
     """Represents the schema of a Post made by a User."""
