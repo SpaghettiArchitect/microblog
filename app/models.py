@@ -9,6 +9,25 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from app import db, login
 
+# Association table that links a user with another user, to create a
+# follower-following many-to-many relationship.
+followers = sa.Table(
+    "followers",
+    db.metadata,
+    sa.Column(
+        "follower_id",
+        sa.Integer,
+        sa.ForeignKey("user.id"),
+        primary_key=True,
+    ),
+    sa.Column(
+        "followed_id",
+        sa.Integer,
+        sa.ForeignKey("user.id"),
+        primary_key=True,
+    ),
+)
+
 
 class User(UserMixin, db.Model):
     """Represents the User schema in the database.
@@ -25,6 +44,22 @@ class User(UserMixin, db.Model):
     about_me: so.Mapped[Optional[str]] = so.mapped_column(sa.String(140))
     last_seen: so.Mapped[Optional[datetime]] = so.mapped_column(
         default=lambda: datetime.now(timezone.utc)
+    )
+
+    # Models a many-to-many relationship between the followers of a user
+    # and the users followed by a user.
+    following: so.WriteOnlyMapped["User"] = so.relationship(
+        secondary=followers,
+        primaryjoin=(followers.c.follower_id == id),
+        secondaryjoin=(followers.c.followed_id == id),
+        back_populates="followers",
+    )
+
+    followers: so.WriteOnlyMapped["User"] = so.relationship(
+        secondary=followers,
+        primaryjoin=(followers.c.followed_id == id),
+        secondaryjoin=(followers.c.follower_id == id),
+        back_populates="following",
     )
 
     def __repr__(self) -> str:
