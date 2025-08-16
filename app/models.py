@@ -111,6 +111,26 @@ class User(UserMixin, db.Model):
         )
         return db.session.scalar(query)
 
+    def following_posts(self):
+        """Returns all the posts, from newest to oldest, of all the users
+        the current user is following.
+        """
+        Author = so.aliased(User)
+        Follower = so.aliased(User)
+        return (
+            sa.select(Post)
+            .join(Post.author.of_type(Author))
+            .join(Author.followers.of_type(Follower), isouter=True)
+            .where(
+                sa.or_(
+                    Follower.id == self.id,
+                    Author.id == self.id,
+                )
+            )
+            .group_by(Post)
+            .order_by(Post.timestamp.desc())
+        )
+
 
 class Post(db.Model):
     """Represents the schema of a Post made by a User."""
