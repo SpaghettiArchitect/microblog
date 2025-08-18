@@ -6,7 +6,7 @@ from flask import Response, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 
 from app import app, db
-from app.forms import EditProfileForm, LoginForm, RegistrationForm
+from app.forms import EditProfileForm, EmptyForm, LoginForm, RegistrationForm
 from app.models import User
 
 
@@ -108,13 +108,14 @@ def register() -> Response | str:
 def user(username: str) -> str:
     """Renders the user's profile page."""
     user = db.first_or_404(sa.select(User).where(User.username == username))
+    form = EmptyForm()
     # Mock posts for now; delete after the functionality is implemented.
     posts = [
         {"author": user, "body": "Test post #1"},
         {"author": user, "body": "Test post #2"},
     ]
 
-    return render_template("user.html", user=user, posts=posts)
+    return render_template("user.html", user=user, posts=posts, form=form)
 
 
 @app.route("/edit_profile", methods=["GET", "POST"])
@@ -137,3 +138,52 @@ def edit_profile() -> Response | str:
         form.about_me.data = current_user.about_me
 
     return render_template("edit_profile.html", title="Edit Profile", form=form)
+
+
+@app.route("/follow/<username>", methods=["POST"])
+@login_required
+def follow(username: str):
+    """Make the current user follow another user."""
+    form = EmptyForm()
+    if form.validate_on_submit():
+        # Check that the user to be followed exists and they aren't the current user.
+        user = db.session.scalar(sa.select(User).where(User.username == username))
+        if user is None:
+            flash(f"User {username} not found.")
+            return redirect(url_for("index"))
+        if user == current_user:
+            flash("You cannot follow yourself!")
+            return redirect(url_for("user", username=username))
+
+        # Make the current user follow the requested user.
+        current_user.follow(user)
+        db.session.commit()
+        flash(f"You are now following {username}!")
+        return redirect(url_for("user", username=username))
+    else:
+        return redirect(url_for("index"))
+
+
+@app.route("/unfollow/<username>", methods=["POST"])
+@login_required
+def unfollow(username: str):
+    """Make the current user unfollow another user."""
+    form = EmptyForm()
+
+    if form.validate_on_submit():
+        # Check that the user to be unfollowed exists and they aren't the current user.
+        user = db.session.scalar(sa.select(User).where(User.username == username))
+        if user is None:
+            flash(f"User {username} not found.")
+            return redirect(url_for("index"))
+        if user == current_user:
+            flash("You cannot unfollow yourself!")
+            return redirect(url_for("user", username=username))
+
+        # Unfollow the requested user.
+        current_user.unfollow(user)
+        db.session.commit()
+        flash(f"You stopped following {username}.")
+        return redirect(url_for("user", username=username))
+    else:
+        return redirect(url_for("index"))
