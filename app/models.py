@@ -74,7 +74,7 @@ class User(UserMixin, db.Model):
         """Check that the password matches the hash previosly stored."""
         return check_password_hash(self.password_hash, password)
 
-    def avatar(self, size):
+    def avatar(self, size) -> str:
         """Get the URL for a unique profile picture for the user using
         the Gravatar service.
         """
@@ -111,7 +111,7 @@ class User(UserMixin, db.Model):
         )
         return db.session.scalar(query)
 
-    def following_posts(self):
+    def following_posts(self) -> sa.Select["Post"]:
         """Returns all the posts, from newest to oldest, of all the users
         the current user is following.
         """

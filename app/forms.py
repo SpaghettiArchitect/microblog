@@ -64,7 +64,7 @@ class EditProfileForm(FlaskForm):
         super().__init__(*args, **kwargs)
         self.original_username = original_username
 
-    def validate_username(self, username: str):
+    def validate_username(self, username: str) -> None:
         """Check that the new username is not already in use. If is in use,
         raise a ValidationError.
         """

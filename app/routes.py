@@ -145,7 +145,7 @@ def edit_profile() -> Response | str:
 
 @app.route("/follow/<username>", methods=["POST"])
 @login_required
-def follow(username: str):
+def follow(username: str) -> Response:
     """Make the current user follow another user."""
     form = EmptyForm()
     if form.validate_on_submit():
@@ -169,7 +169,7 @@ def follow(username: str):
 
 @app.route("/unfollow/<username>", methods=["POST"])
 @login_required
-def unfollow(username: str):
+def unfollow(username: str) -> Response:
     """Make the current user unfollow another user."""
     form = EmptyForm()
 
@@ -194,7 +194,7 @@ def unfollow(username: str):
 
 @app.route("/explore")
 @login_required
-def explore():
+def explore() -> str:
     """Render the page to explore all posts from all users."""
     query = sa.select(Post).order_by(Post.timestamp.desc())
     posts = db.session.scalars(query).all()
