@@ -19,4 +19,4 @@ class Config:
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
     ADMINS = [admin.strip() for admin in os.environ.get("ADMINS").split("\n")]
 
-    POSTS_PER_PAGE = 3
+    POSTS_PER_PAGE = 20
