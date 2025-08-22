@@ -1,13 +1,15 @@
 from datetime import datetime, timezone
 from hashlib import md5
+from time import time
 from typing import Optional
 
+import jwt
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from app import db, login
+from app import app, db, login
 
 # Association table that links a user with another user, to create a
 # follower-following many-to-many relationship.
@@ -131,6 +133,30 @@ class User(UserMixin, db.Model):
             .order_by(Post.timestamp.desc())
         )
 
+    def get_reset_password_token(self, expires_in: int = 600) -> str:
+        """Generates a JWT token that can be used to reset the password
+        of the user. The token expires in `expires_in` seconds (default 10 min).
+        """
+        return jwt.encode(
+            {"reset_password": self.id, "exp": time() + expires_in},
+            app.config["SECRET_KEY"],
+            algorithm="HS256",
+        )
+
+    @staticmethod
+    def verify_reset_password_token(token: str) -> Optional["User"]:
+        """Verifies the given JWT token and returns the corresponding user
+        if the token is valid. If the token is invalid or expired, returns None.
+        """
+        try:
+            id = jwt.decode(token, app.config["SECRET_KEY"], algorithms=["HS256"])[
+                "reset_password"
+            ]
+        except Exception:
+            return
+
+        return db.session.get(User, id)
+
 
 class Post(db.Model):
     """Represents the schema of a Post made by a User."""
@@ -150,7 +176,7 @@ class Post(db.Model):
 
 
 @login.user_loader
-def load_user(id: str) -> User | None:
+def load_user(id: str) -> Optional[User]:
     """Callback used by flask-login to reload a user object from the user
     ID stored in the session.
 
