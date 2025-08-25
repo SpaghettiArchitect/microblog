@@ -2,7 +2,15 @@ from datetime import datetime, timezone
 from urllib.parse import urlsplit
 
 import sqlalchemy as sa
-from flask import Response, flash, redirect, render_template, request, url_for
+from flask import (
+    Response,
+    flash,
+    redirect,
+    render_template,
+    request,
+    send_from_directory,
+    url_for,
+)
 from flask_login import current_user, login_required, login_user, logout_user
 
 from app import app, db
@@ -297,3 +305,8 @@ def reset_password(token: str) -> Response | str:
         return redirect(url_for("login"))
 
     return render_template("reset_password.html", form=form)
+
+
+@app.route("/preline.js")
+def serve_preline_js() -> Response:
+    return send_from_directory("node_modules/preline/dist", "preline.js")

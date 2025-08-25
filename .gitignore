@@ -19,5 +19,6 @@ wheels/
 logs/*
 !logs/.gitkeep
 
-# Ignore JavaScript modules
+# Ignore JavaScript modules and output of TailwindCSS
 node_modules/
+app/static/css/output.css

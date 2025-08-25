@@ -1,0 +1,24 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "Dependencies needed for the UI of the application",
+  "license": "ISC",
+  "author": "SpaghettiArchitect",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx @tailwindcss/cli -i ./static/css/input.css -o ./static/css/output.css --minify",
+    "watch": "npx @tailwindcss/cli -i ./static/css/input.css -o ./static/css/output.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.12",
+    "preline": "^3.2.3",
+    "tailwindcss": "^4.1.12"
+  },
+  "devDependencies": {
+    "@iconify-json/tabler": "^1.2.22",
+    "@iconify/tailwind4": "^1.0.6",
+    "@tailwindcss/forms": "^0.5.10"
+  }
+}
