@@ -309,4 +309,5 @@ def reset_password(token: str) -> Response | str:
 
 @app.route("/preline.js")
 def serve_preline_js() -> Response:
+    """Serve the preline.js file from the node_modules directory."""
     return send_from_directory("node_modules/preline/dist", "preline.js")
