@@ -18,3 +18,6 @@ wheels/
 # Flask logs
 logs/*
 !logs/.gitkeep
+
+# Ignore JavaScript modules
+node_modules/
