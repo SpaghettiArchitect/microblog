@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% import "_form_helpers.html" as fh %}
+{% set go_back_link = go_back_link|default("") -%}
+
+{% block content %}
+  <div class="bg-white border border-gray-200 rounded-xl shadow-2xs dark:bg-neutral-900 dark:border-neutral-700">
+    <div class="p-4 sm:p-7">
+      <div class="text-center">
+        <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">
+            {% block form_title %}{% endblock %}
+        </h1>
+        {% block form_after_title %}
+        <p class="mt-2 mb-5 text-sm text-gray-600 dark:text-neutral-400">
+          {% block form_subtitle %}{% endblock %}
+          <a class="text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-blue-500" href="{{ go_back_link }}">{% block form_subtitle_link %}{% endblock %}</a>
+        </p>
+        {% endblock %}
+      </div>
+      {{ fh.quick_form(form) }}
+      {% block form_footer %}{% endblock %}
+    </div>
+  </div>
+  {% endblock %}
