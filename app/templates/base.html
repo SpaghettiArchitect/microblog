@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="relative min-h-full light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,10 +12,11 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/output.css') }}"
     />
+    <script src="{{ url_for('static', filename='js/themeSwitch.min.js') }}"></script>
   </head>
-  <body>
+  <body class="mb-14 sm:mb-29 dark:bg-neutral-900">
     <header
-      class="flex flex-wrap sm:justify-start sm:flex-nowrap w-full bg-white text-sm py-3 dark:bg-neutral-800"
+      class="sticky top-0 inset-x-0 flex flex-wrap sm:justify-start sm:flex-nowrap w-full bg-gray-200 text-sm py-3 bg-white border-b border-gray-200 dark:bg-neutral-900 dark:border-neutral-700"
     >
       <nav
         class="max-w-[85rem] w-full mx-auto px-4 flex flex-wrap basis-full items-center justify-between"
@@ -26,6 +27,19 @@
           >Microblog</a
         >
         <div class="sm:order-3 flex items-center gap-x-2">
+          <!-- Theme Switcher -->
+          <button type="button" class="hs-dark-mode-active:hidden block hs-dark-mode font-medium text-gray-800 rounded-full hover:bg-gray-200 focus:outline-hidden focus:bg-gray-200 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" data-hs-theme-click-value="dark">
+            <span class="group inline-flex shrink-0 justify-center items-center size-9">
+              <span class="icon-[tabler--moon-filled] shrink-0 size-4"></span>
+            </span>
+          </button>
+          <button type="button" class="hs-dark-mode-active:block hidden hs-dark-mode font-medium text-gray-800 rounded-full hover:bg-gray-200 focus:outline-hidden focus:bg-gray-200 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" data-hs-theme-click-value="light">
+            <span class="group inline-flex shrink-0 justify-center items-center size-9">
+              <span class="icon-[tabler--sun-high-filled] shrink-0 size-4"></span>
+            </span>
+          </button>
+          <!-- End Theme Switcher -->
+          <!-- Menu Toggle -->
           <button
             type="button"
             class="sm:hidden hs-collapse-toggle relative size-9 flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/10"
@@ -39,6 +53,7 @@
             <span class="icon-[tabler--x] hs-collapse-open:block hidden shrink-0 size-4"></span>
             <span class="sr-only">Toggle</span>
           </button>
+          <!-- End Menu Toggle -->
           {% if current_user.is_anonymous %}
           <button
             type="button"
@@ -73,7 +88,7 @@
               aria-labelledby="hs-dropdown-account"
             >
               <div
-                class="py-3 px-5 bg-gray-100 rounded-t-lg dark:bg-neutral-700"
+                class="py-3 px-5 bg-gray-100 rounded-t-lg dark:bg-neutral-900"
               >
                 <p class="text-sm text-gray-500 dark:text-neutral-500">
                   Signed in as
