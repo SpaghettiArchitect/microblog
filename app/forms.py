@@ -1,6 +1,13 @@
 import sqlalchemy as sa
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, PasswordField, StringField, SubmitField, TextAreaField
+from wtforms import (
+    BooleanField,
+    EmailField,
+    PasswordField,
+    StringField,
+    SubmitField,
+    TextAreaField,
+)
 from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
 
 from app import db
@@ -20,7 +27,7 @@ class RegistrationForm(FlaskForm):
     """Form to register a new user to the site."""
 
     username = StringField("Username", validators=[DataRequired()])
-    email = StringField("Email", validators=[DataRequired(), Email()])
+    email = EmailField("Email", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[DataRequired()])
     password2 = PasswordField(
         "Repeat Password", validators=[DataRequired(), EqualTo("password")]
@@ -96,7 +103,7 @@ class PostForm(FlaskForm):
 class ResetPasswordRequestForm(FlaskForm):
     """Form to request a password reset."""
 
-    email = StringField("Email", validators=[DataRequired(), Email()])
+    email = EmailField("Email", validators=[DataRequired(), Email()])
     submit = SubmitField("Request Password Reset")
 
 
