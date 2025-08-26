@@ -131,13 +131,22 @@
             class="flex flex-col gap-5 mt-5 sm:flex-row sm:items-center sm:mt-0 sm:ps-5"
           >
             <a
-              class="font-medium text-blue-500 focus:outline-hidden"
+              {% if title == "Home" %}
+                class="font-medium text-blue-500 focus:outline-hidden"
+                aria-current="page"
+              {% else %}
+                class="font-medium text-gray-600 hover:text-gray-400 focus:outline-hidden focus:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
+              {% endif %}
               href="{{ url_for('index') }}"
-              aria-current="page"
               >Home</a
             >
             <a
-              class="font-medium text-gray-600 hover:text-gray-400 focus:outline-hidden focus:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
+              {% if title == "Explore" %}
+                class="font-medium text-blue-500 focus:outline-hidden"
+                aria-current="page"
+              {% else %}
+                class="font-medium text-gray-600 hover:text-gray-400 focus:outline-hidden focus:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
+              {% endif %}
               href="{{ url_for('explore') }}"
               >Explore</a
             >

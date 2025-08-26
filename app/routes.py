@@ -64,7 +64,7 @@ def index() -> str:
 
     return render_template(
         "index.html",
-        title="Home Page",
+        title="Home",
         form=form,
         posts=posts.items,
         next_url=next_url,
