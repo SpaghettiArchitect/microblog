@@ -14,9 +14,9 @@
     />
     <script src="{{ url_for('static', filename='js/themeSwitch.min.js') }}"></script>
   </head>
-  <body class="mb-14 sm:mb-29 dark:bg-neutral-900">
+  <body class="dark:bg-neutral-900">
     <header
-      class="sticky top-0 inset-x-0 flex flex-wrap sm:justify-start sm:flex-nowrap w-full bg-gray-200 text-sm py-3 bg-white border-b border-gray-200 dark:bg-neutral-900 dark:border-neutral-700"
+      class="sticky top-0 inset-x-0 flex flex-wrap sm:justify-start sm:flex-nowrap w-full text-sm py-3 bg-white border-b border-gray-200 dark:bg-neutral-900 dark:border-neutral-700"
     >
       <nav
         class="max-w-[85rem] w-full mx-auto px-4 flex flex-wrap basis-full items-center justify-between"
@@ -154,14 +154,16 @@
         </div>
       </nav>
     </header>
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        {% for message in messages %}
-          {% include "_alert_info.html" %}
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-    <main>{% block content %}{% endblock %}</main>
+    <main class="w-full max-w-md mx-auto p-6">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+            {% include "_alert_info.html" %}
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
     <script src="{{ url_for('serve_preline_js') }}"></script>
   </body>
 </html>
