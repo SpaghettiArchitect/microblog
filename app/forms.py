@@ -19,8 +19,8 @@ class LoginForm(FlaskForm):
 
     username = StringField("Username", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
-    remember_me = BooleanField("Remember Me")
-    submit = SubmitField("Sign In")
+    remember_me = BooleanField("Remember me")
+    submit = SubmitField("Sign in")
 
 
 class RegistrationForm(FlaskForm):
@@ -30,7 +30,7 @@ class RegistrationForm(FlaskForm):
     email = EmailField("Email", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[DataRequired()])
     password2 = PasswordField(
-        "Repeat Password", validators=[DataRequired(), EqualTo("password")]
+        "Confirm password", validators=[DataRequired(), EqualTo("password")]
     )
     submit = SubmitField("Register")
 
@@ -43,7 +43,7 @@ class RegistrationForm(FlaskForm):
         user = db.session.scalar(sa.select(User).where(User.username == username.data))
 
         if user is not None:
-            raise ValidationError("Please use a different username")
+            raise ValidationError("Please use a different username.")
 
     def validate_email(self, email: str) -> None:
         """Checks that the email is not already in use.
@@ -104,14 +104,14 @@ class ResetPasswordRequestForm(FlaskForm):
     """Form to request a password reset."""
 
     email = EmailField("Email", validators=[DataRequired(), Email()])
-    submit = SubmitField("Request Password Reset")
+    submit = SubmitField("Request password reset")
 
 
 class ResetPasswordForm(FlaskForm):
     """Form to reset the password."""
 
-    password = PasswordField("New Password", validators=[DataRequired()])
+    password = PasswordField("New password", validators=[DataRequired()])
     password2 = PasswordField(
-        "Repeat New Password", validators=[DataRequired(), EqualTo("password")]
+        "Confirm new password", validators=[DataRequired(), EqualTo("password")]
     )
-    submit = SubmitField("Reset Password")
+    submit = SubmitField("Reset password")
