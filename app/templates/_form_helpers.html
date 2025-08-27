@@ -14,27 +14,54 @@
     <div>
       {{ field.label(class="block text-sm mb-2 dark:text-white") }}
       <div class="relative">
-        {% set valid_icons = ("username", "email", "password", "password2") %}
-
-        {{ field(class="peer py-2.5 sm:py-3 px-4"
-        + (" ps-11 " if field.id in valid_icons else "")
-        + "block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" ) }}
-
-        {%- if field.id in valid_icons %}
+        {%- set icons = {
+          "username": "icon-[tabler--user]",
+          "email": "icon-[tabler--mail]",
+          "password": "icon-[tabler--key]",
+        } %}
+        {%- if field.widget.input_type in icons or field.id in icons %}
         <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
-          {%- if field.id == "username" %}
-          <span class="icon-[tabler--user] shrink-0 size-4 text-gray-500 dark:text-neutral-500"></span>
-          {%- elif field.id == "email" %}
-          <span class="icon-[tabler--mail] shrink-0 size-4 text-gray-500 dark:text-neutral-500"></span>
-          {%- elif field.id == "password" or field.id == "password2" %}
-          <span class="icon-[tabler--key] shrink-0 size-4 text-gray-500 dark:text-neutral-500"></span>
-          {%- endif %}
+          {%- set icon = icons[field.id] if field.id in icons else icons[field.widget.input_type] %}
+          <span class="{{ icon }} shrink-0 size-4 text-gray-500 dark:text-neutral-500"></span>
+        </div>
+        {%- endif %}
+
+        {%- set has_icon = " ps-11 " if field.widget.input_type in icons or field.id in icons else "" %}
+        {%- set is_valid =  (
+          " border-red-500 focus:border-red-500 focus:ring-red-500 dark:border-red-800 "
+          if field.errors else
+          " border-gray-200 focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 "
+          ) %}
+        {%- set field_class =  (
+          "peer py-2.5 sm:py-3 px-4"
+          + has_icon
+          + "block w-full rounded-lg sm:text-sm"
+          + is_valid
+          + "disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+          ) %}
+        {{ field(class=field_class, **({'autofocus': True} if autofocus else {})) }}
+            
+        {%- if field.widget.input_type == "password" %}
+        <button
+          type="button"
+          data-hs-toggle-password='{
+            "target": "#{{ field.id }}"
+          }'
+          class="absolute inset-y-0 end-0 flex items-center z-20 px-3 cursor-pointer text-gray-500 dark:text-neutral-500 rounded-e-md focus:outline-hidden focus:text-blue-600 dark:focus:text-blue-500">
+          <span class="hs-password-active:hidden icon-[tabler--eye-off] shrink-0 size-3.5"></span>
+          <span class="hidden hs-password-active:block icon-[tabler--eye] shrink-0 size-3.5"></span>
+        </button>
+        {%- endif %}
+    
+        {%- if field.errors and not field.widget.input_type == "password" %}
+        <div class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3">
+          <span class="icon-[tabler--info-circle] shrink-0 size-4 text-red-500 dark:text-red-600"></span>
         </div>
         {%- endif %}
       </div>
 
       {%- for error in field.errors %}
-      <div class="text-xs text-red-600 mt-2">{{ error }}</div>
+      <div class="text-xs text-red-600 dark:text-red-700 mt-2">{{ error }}</div>
       {%- endfor %}
     </div>
   {%- endif %}
@@ -51,7 +78,9 @@
     {%- for field, errors in form.errors.items() %}
       {%- if form[field].widget.input_type == "hidden" %}
         {%- for error in errors %}
-        <div class="invalid-feedback">{{ error }}</div>
+        <div class="text-xs text-red-600 dark:text-red-700 mt-2">
+          {{ error }}
+        </div>
         {%- endfor %}
       {%- endif %}
     {%- endfor %}
