@@ -17,7 +17,7 @@
       </div>
 
       {%- for error in field.errors %}
-      <div class="text-xs text-red-600 dark:text-red-700 mt-2">{{ error }}</div>
+      <p class="text-xs text-red-600 dark:text-red-700 mt-2">{{ error }}</p>
       {%- endfor %}
     </div>
   {%- elif field.type == "SubmitField" %}
@@ -73,7 +73,7 @@
       </div>
 
       {%- for error in field.errors %}
-      <div class="text-xs text-red-600 dark:text-red-700 mt-2">{{ error }}</div>
+      <p class="text-xs text-red-600 dark:text-red-700 mt-2">{{ error }}</p>
       {%- endfor %}
     </div>
   {%- endif %}
@@ -90,9 +90,9 @@
     {%- for field, errors in form.errors.items() %}
       {%- if form[field].widget.input_type == "hidden" %}
         {%- for error in errors %}
-        <div class="text-xs text-red-600 dark:text-red-700 mt-2">
+        <p class="text-xs text-red-600 dark:text-red-700 mt-2">
           {{ error }}
-        </div>
+        </p>
         {%- endfor %}
       {%- endif %}
     {%- endfor %}
