@@ -1,29 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hi, {{ current_user.username }}!</h1>
+  <div class="grid gap-y-2">
+    <h1 class="text-4xl dark:text-white mb-3">
+      {%- if title == "Home" %}
+      Hi, {{ current_user.username }}!
+      {%- elif title == "Explore" %}
+      Explore
+      {%- endif %}
+    </h1>
     {% if form %}
-    <form action="" method="post">
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.post.label }} <br>
-            {{ form.post(cols=32, rows=4) }} <br>
-            {% for error in form.post.errors %}
-            <span style="color:red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.submit() }}
-        </p>
-    </form>
+      {% include "_form_new_post.html" %}
     {% endif %}
     {% for post in posts %}
-        {% include "_post.html" %}
+      {% include "_post.html" %}
     {% endfor %}
     {% if prev_url %}
-    <a href="{{ prev_url }}">Newer posts</a>
+      <a href="{{ prev_url }}">Newer posts</a>
     {% endif %}
     {% if next_url %}
-    <a href="{{ next_url }}">Older posts</a>
+      <a href="{{ next_url }}">Older posts</a>
     {% endif %}
+  </div>
 {% endblock %}
