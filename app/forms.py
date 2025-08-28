@@ -60,9 +60,9 @@ class RegistrationForm(FlaskForm):
 class EditProfileForm(FlaskForm):
     """Form to update the profile information of a user."""
 
-    username = StringField("Username", validators=[DataRequired()])
+    username = StringField("New username", validators=[DataRequired()])
     about_me = TextAreaField("About me", validators=[Length(min=0, max=140)])
-    submit = SubmitField("Submit")
+    submit = SubmitField("Update profile")
 
     def __init__(self, original_username: str, *args, **kwargs) -> None:
         """Creates an instance of this class and sets the original_username
@@ -95,9 +95,9 @@ class PostForm(FlaskForm):
     """A simple form to create a new post."""
 
     post = TextAreaField(
-        "Say something", validators=[DataRequired(), Length(min=1, max=140)]
+        "Say something...", validators=[DataRequired(), Length(min=1, max=140)]
     )
-    submit = SubmitField("Submit")
+    submit = SubmitField("Post")
 
 
 class ResetPasswordRequestForm(FlaskForm):

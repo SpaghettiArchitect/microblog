@@ -183,7 +183,7 @@ def edit_profile() -> Response | str:
         current_user.about_me = form.about_me.data
         db.session.commit()
         flash("Your changes have been saved.")
-        return redirect(url_for("edit_profile"))
+        return redirect(url_for("user", username=current_user.username))
     # Provides the initial version of the form pre-populated with the
     # information of the user.
     elif request.method == "GET":
