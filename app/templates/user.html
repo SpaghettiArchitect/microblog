@@ -2,46 +2,125 @@
 
 {% block content %}
 <div class="grid gap-y-2 sm:gap-y-4">
-  <table>
-    <tr valign="top">
-      <td>
-        <img 
-          src="{{ user.avatar(128) }}" 
-          alt="Profile avatar for {{ user.username }}"
-        />
-      </td>
-      <td>
-        <h1>User: {{ user.username }}</h1>
-        {% if user.about_me %}
-        <p>{{ user.about_me }}</p>
-        {% endif %}
-        {% if user.last_seen %}
-        <p>Last seen on: {{ user.last_seen }}</p>
-        {% endif %}
-        <p>{{ user.followers_count() }} followers, {{user.following_count() }} following.</p>
-        {% if user == current_user %}
-        <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
-        {% elif not current_user.is_following(user) %}
-        <p>
-          <form action="{{ url_for('follow', username=user.username) }}" method="post">
-            {{ form.hidden_tag() }}
-            {{ form.submit(value="Follow") }}
-          </form>
-        </p>
-        {% else %}
-        <p>
-          <form action="{{ url_for('unfollow', username=user.username) }}" method="post">
-            {{ form.hidden_tag() }}
-            {{ form.submit(value="Unfollow") }}
-          </form>
-        </p>
-        {% endif %}
-      </td>
-    </tr>
-  </table>
-  <hr>
+  <div
+    class="mt-4 p-4 sm:p-5 grid gap-y-2 border border-gray-200 border-b-1 border-b-blue-600 shadow-xs rounded-xl dark:border-neutral-700 dark:border-b-blue-500 dark:shadow-neutral-700/70"
+  >
+    <!-- Profile -->
+    <div class="flex justify-between">
+      <!-- Avatar and Title -->
+      <div class="flex flex-wrap justify-start items-center gap-x-3">
+        <div class="shrink-0">
+          <img
+            src="{{ user.avatar(128) }}"
+            alt="Profile avatar for {{ user.username }}"
+            class="shrink-0 size-16 rounded-full"
+          />
+        </div>
+        <h1 class="text-4xl font-medium text-gray-800 dark:text-neutral-200">
+          {{ user.username }}
+        </h1>
+      </div>
+      <!-- End Avatar and Title -->
+      <!-- Action Button -->
+      {%- set button_style = "self-baseline py-2 px-3 inline-flex items-center
+      gap-x-2 text-sm font-medium rounded-xl border border-transparent
+      bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-hidden
+      focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none
+      dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20
+      dark:focus:bg-blue-800/20" %} {%- if user == current_user %}
+      <a
+        type="button"
+        class="{{ button_style }}"
+        aria-label="Edit profile"
+        href="{{ url_for('edit_profile') }}"
+      >
+        <span class="hidden sm:block">Edit profile</span>
+        <span
+          class="icon-[tabler--edit] shrink-0 size-4"
+          aria-hidden="true"
+        ></span>
+      </a>
+
+      {%- elif not current_user.is_following(user) %}
+      <form
+        id="follow"
+        class="hidden"
+        action="{{ url_for('follow', username=user.username) }}"
+        method="post"
+      >
+        {{ form.hidden_tag() }}
+      </form>
+      <button
+        class="{{ button_style }}"
+        aria-label="Follow user"
+        form="follow"
+        type="submit"
+        name="{{ form.submit.name }}"
+      >
+        <span class="hidden sm:block">Follow</span>
+        <span
+          aria-hidden="true"
+          class="icon-[tabler--user-plus] shrink-0 size-4"
+        ></span>
+      </button>
+
+      {%- else %}
+      <form
+        id="unfollow"
+        class="hidden"
+        action="{{ url_for('unfollow', username=user.username) }}"
+        method="post"
+      >
+        {{ form.hidden_tag() }}
+      </form>
+      <button
+        class="{{ button_style }}"
+        aria-label="Unfollow user"
+        form="unfollow"
+        type="submit"
+        name="{{ form.submit.name }}"
+      >
+        <span class="hidden sm:block">Unfollow</span>
+        <span
+          aria-hidden="true"
+          class="icon-[tabler--user-x] shrink-0 size-4"
+        ></span>
+      </button>
+      {%- endif %}
+      <!-- End Action Button -->
+    </div>
+    {%- if user.last_seen %}
+    <p class="text-sm text-gray-500 dark:text-neutral-500">
+      Last seen on: {{ user.last_seen }}
+    </p>
+    {%- endif %}
+    <!-- End Profile -->
+    <!-- About Me -->
+    {% if user.about_me %}
+    <div class="mt-4">
+      <p class="text-sm text-gray-800 dark:text-neutral-200">
+        {{ user.about_me }}
+      </p>
+    </div>
+    {%- endif %}
+    <!-- End About Me -->
+    <!-- Followers and Links -->
+    <div class="mt-2 flex flex-wrap items-start gap-2">
+      <p class="text-sm text-gray-800 dark:text-neutral-200">
+        {{ user.followers_count() }}
+        <span class="text-gray-600 dark:text-neutral-400">followers</span>
+      </p>
+      <p class="text-sm text-gray-800 dark:text-neutral-200">
+        {{ user.following_count() }}
+        <span class="text-gray-600 dark:text-neutral-400">following</span>
+      </p>
+    </div>
+    <!-- End Followers and Links -->
+  </div>
+  <!-- Posts -->
   {%- if posts %}
     {%- include "_show_posts.html" %}
   {%- endif %}
+  <!-- End Posts -->
 </div>
 {% endblock %}
