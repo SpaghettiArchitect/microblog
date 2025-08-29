@@ -1,25 +1,19 @@
 {% extends "base.html" %}
 
-{% block content %}
-  <div class="grid gap-y-2">
-    <h1 class="text-4xl dark:text-white mb-3">
+{%- block content %}
+  <div class="grid gap-y-2 sm:gap-y-4">
+    <h1 class="text-4xl dark:text-white">
       {%- if title == "Home" %}
       Hi, {{ current_user.username }}!
       {%- elif title == "Explore" %}
       Explore
       {%- endif %}
     </h1>
-    {% if form %}
-      {% include "_form_new_post.html" %}
-    {% endif %}
-    {% for post in posts %}
-      {% include "_post.html" %}
-    {% endfor %}
-    {% if prev_url %}
-      <a href="{{ prev_url }}">Newer posts</a>
-    {% endif %}
-    {% if next_url %}
-      <a href="{{ next_url }}">Older posts</a>
-    {% endif %}
+    {%- if form %}
+      {%- include "_form_new_post.html" %}
+    {%- endif %}
+    {%- if posts %}
+      {%- include "_show_posts.html" %}
+    {%- endif %}
   </div>
-{% endblock %}
+{%- endblock %}

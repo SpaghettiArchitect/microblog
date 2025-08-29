@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="grid gap-y-2 sm:gap-y-4">
   <table>
     <tr valign="top">
       <td>
@@ -39,13 +40,8 @@
     </tr>
   </table>
   <hr>
-  {% for post in posts %}
-    {% include "_post.html" %}
-  {% endfor %}
-  {% if prev_url %}
-  <a href="{{ prev_url }}">Newer posts</a>
-  {% endif %}
-  {% if next_url %}
-  <a href="{{ next_url }}">Older posts</a>
-  {% endif %}
+  {%- if posts %}
+    {%- include "_show_posts.html" %}
+  {%- endif %}
+</div>
 {% endblock %}
