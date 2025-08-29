@@ -1,16 +1,24 @@
-<table>
-  <tr valign="top">
-    <td>
-      <img
-        src="{{ post.author.avatar(36) }}"
-        alt="Profile avatar for {{ post.author.username }}"
-      />
-    </td>
-    <td>
-      <a href="{{ url_for('user', username=post.author.username) }}">
+<div
+  class="p-4 sm:p-5 first:border-none border-t border-gray-200 dark:border-neutral-700"
+>
+  <div class="mb-2 flex w-full sm:items-center gap-x-3">
+    <a href="{{ url_for('user', username=post.author.username) }}">
+      <div class="shrink-0">
+        <img
+          class="size-8 rounded-full"
+          src="{{ post.author.avatar(36) }}"
+          alt="Profile avatar for {{ post.author.username }}"
+        />
+      </div>
+    </a>
+    <div class="grow">
+      <a
+        class="font-semibold decoration-2 hover:underline focus:outline-hidden focus:underline text-gray-900 dark:text-neutral-200"
+        href="{{ url_for('user', username=post.author.username) }}"
+      >
         {{ post.author.username }}
       </a>
-      says:<br>{{ post.body }}
-    </td>
-  </tr>
-</table>
+    </div>
+  </div>
+  <p class="text-sm text-gray-700 dark:text-neutral-400">{{ post.body }}</p>
+</div>
