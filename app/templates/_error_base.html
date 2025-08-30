@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{%- set go_back_url = url_for("index") %}
+
+{%- block content %}
+<div class="text-center py-10 px-4 sm:px-6 lg:px-8">
+  <h1
+    class="block text-7xl font-bold text-gray-800 sm:text-9xl dark:text-white"
+  >
+    {%- block error %}{%- endblock %}
+  </h1>
+  <p class="mt-3 text-gray-600 dark:text-neutral-400">
+    {%- block description %}{%- endblock %}
+  </p>
+  <div class="mt-5 flex flex-col justify-center items-center gap-2 sm:flex-row sm:gap-3">
+    <a class="w-full sm:w-auto py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" href="{{ go_back_url }}">
+        <span class="icon-[tabler--chevron-left] shrink-0 size-4"></span>
+        {%- block button_text %}{%- endblock %}
+    </a>
+  </div>
+</div>
+{%- endblock %}
