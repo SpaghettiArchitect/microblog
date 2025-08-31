@@ -91,7 +91,7 @@
     </div>
     {%- if user.last_seen %}
     <p class="text-sm text-gray-500 dark:text-neutral-500">
-      Last seen on: {{ user.last_seen }}
+      Last active: {{ moment(user.last_seen).fromNow() }}
     </p>
     {%- endif %}
     <!-- End Profile -->

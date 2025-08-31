@@ -167,6 +167,7 @@
       {% block content %}{% endblock %}
     </main>
     <script src="{{ url_for('serve_preline_js') }}"></script>
+    {{ moment.include_moment() }}
     {%- if current_user.is_authenticated and title == "Home" %}
     <script src="{{ url_for('static', filename='js/calcTextareaCharsLeft.min.js') }}"></script>
     {%- endif %}
