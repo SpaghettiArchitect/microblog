@@ -22,3 +22,7 @@ logs/*
 # Ignore JavaScript modules and output of TailwindCSS
 node_modules/
 app/static/css/output.css
+
+# Translations
+*.mo
+*.pot
