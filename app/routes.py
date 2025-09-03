@@ -240,7 +240,7 @@ def unfollow(username: str) -> Response:
         # Unfollow the requested user.
         current_user.unfollow(user)
         db.session.commit()
-        flash(_("You stopped following %(username)s."), username=username)
+        flash(_("You stopped following %(username)s.", username=username))
         return redirect(url_for("user", username=username))
     else:
         return redirect(url_for("index"))
