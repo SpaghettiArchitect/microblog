@@ -6,7 +6,7 @@
     {% if title %}
     <title>{{ title }} - Microblog</title>
     {% else %}
-    <title>Welcome to Microblog!</title>
+    <title>{{ _('Welcome to Microblog!') }}</title>
     {% endif %}
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link
@@ -47,12 +47,12 @@
             id="hs-navbar-alignment-collapse"
             aria-expanded="false"
             aria-controls="hs-navbar-alignment"
-            aria-label="Toggle navigation"
+            aria-label="{{ _('Toggle navigation') }}"
             data-hs-collapse="#hs-navbar-alignment"
           >
             <span class="icon-[tabler--menu-2] hs-collapse-open:hidden shrink-0 size-4"></span>
             <span class="icon-[tabler--x] hs-collapse-open:block hidden shrink-0 size-4"></span>
-            <span class="sr-only">Toggle</span>
+            <span class="sr-only">{{ _('Toggle') }}</span>
           </button>
           <!-- End Menu Toggle -->
           {% if current_user.is_anonymous %}
@@ -60,7 +60,7 @@
             href="{{ url_for('login') }}"
             class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
           >
-            Sign in
+            {{ _('Sign in') }}
             <span class="icon-[tabler--login] shrink-0 size-4"></span>
           </a>
           {% else %}
@@ -74,7 +74,7 @@
               class="size-9.5 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 focus:outline-hidden disabled:opacity-50 disabled:pointer-events-none dark:text-white"
               aria-haspopup="menu"
               aria-expanded="false"
-              aria-label="Dropdown"
+              aria-label="{{ _('Toggle user menu') }}"
             >
               <img
                 class="shrink-0 size-9.5 rounded-full"
@@ -93,7 +93,7 @@
                 class="py-3 px-5 bg-gray-100 rounded-t-lg dark:bg-neutral-900"
               >
                 <p class="text-sm text-gray-500 dark:text-neutral-500">
-                  Signed in as
+                  {{ _('Signed in as') }}
                 </p>
                 <p
                   class="text-sm font-medium text-gray-800 dark:text-neutral-200"
@@ -109,14 +109,14 @@
                   <span
                     class="icon-[tabler--user-square-rounded] shrink-0 size-4"
                   ></span>
-                  Profile
+                  {{ _('Profile') }}
                 </a>
                 <a
                   class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
                   href="{{ url_for('logout') }}"
                 >
                   <span class="icon-[tabler--logout] shrink-0 size-4"></span>
-                  Log Out
+                  {{ _('Log Out') }}
                 </a>
               </div>
             </div>
@@ -140,7 +140,7 @@
                 class="font-medium text-gray-600 hover:text-gray-400 focus:outline-hidden focus:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
               {% endif %}
               href="{{ url_for('index') }}"
-              >Home</a
+              >{{ _('Home') }}</a
             >
             <a
               {% if title == "Explore" %}
@@ -150,7 +150,7 @@
                 class="font-medium text-gray-600 hover:text-gray-400 focus:outline-hidden focus:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
               {% endif %}
               href="{{ url_for('explore') }}"
-              >Explore</a
+              >{{ _('Explore') }}</a
             >
           </div>
         </div>
@@ -168,6 +168,7 @@
     </main>
     <script src="{{ url_for('serve_preline_js') }}"></script>
     {{ moment.include_moment() }}
+    {{ moment.lang(g.locale) }}
     {%- if current_user.is_authenticated and title == "Home" %}
     <script src="{{ url_for('static', filename='js/calcTextareaCharsLeft.min.js') }}"></script>
     {%- endif %}
