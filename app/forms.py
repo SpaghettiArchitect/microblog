@@ -32,7 +32,11 @@ class RegistrationForm(FlaskForm):
     email = EmailField(_l("Email"), validators=[DataRequired(), Email()])
     password = PasswordField(_l("Password"), validators=[DataRequired()])
     password2 = PasswordField(
-        _l("Confirm password"), validators=[DataRequired(), EqualTo("password")]
+        _l("Confirm password"),
+        validators=[
+            DataRequired(),
+            EqualTo("password", message=_l("Passwords must match.")),
+        ],
     )
     submit = SubmitField(_l("Register"))
 
@@ -114,6 +118,10 @@ class ResetPasswordForm(FlaskForm):
 
     password = PasswordField(_l("New password"), validators=[DataRequired()])
     password2 = PasswordField(
-        _l("Confirm new password"), validators=[DataRequired(), EqualTo("password")]
+        _l("Confirm new password"),
+        validators=[
+            DataRequired(),
+            EqualTo("password", message=_l("Passwords must match.")),
+        ],
     )
     submit = SubmitField(_l("Reset password"))
