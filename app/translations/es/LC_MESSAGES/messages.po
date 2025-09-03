@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-02 23:06-0600\n"
-"PO-Revision-Date: 2025-09-02 23:08-0600\n"
+"POT-Creation-Date: 2025-09-03 00:50-0600\n"
+"PO-Revision-Date: 2025-09-03 00:46-0600\n"
 "Last-Translator: \n"
-"Language-Team: es <LL@li.org>\n"
 "Language: es\n"
+"Language-Team: es <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Generated-By: Babel 2.17.0\n"
-"X-Generator: Poedit 3.7\n"
 
 #: app/__init__.py:28
 msgid "Please sign in to access this page."
@@ -39,11 +38,11 @@ msgstr "Contraseña"
 msgid "Remember me"
 msgstr "Recuérdame"
 
-#: app/forms.py:25 app/templates/base.html:63
+#: app/forms.py:25 app/templates/base.html:63 app/templates/login.html:4
 msgid "Sign in"
 msgstr "Iniciar sesión"
 
-#: app/forms.py:32 app/forms.py:108
+#: app/forms.py:32 app/forms.py:112
 msgid "Email"
 msgstr "Correo electrónico"
 
@@ -51,55 +50,59 @@ msgstr "Correo electrónico"
 msgid "Confirm password"
 msgstr "Confirmar contraseña"
 
-#: app/forms.py:37 app/routes.py:136
+#: app/forms.py:38 app/forms.py:124
+msgid "Passwords must match."
+msgstr "Ambas contraseñas deben coincidir."
+
+#: app/forms.py:41 app/routes.py:136 app/templates/register.html:4
 msgid "Register"
 msgstr "Registrarse"
 
-#: app/forms.py:48 app/forms.py:85
+#: app/forms.py:52 app/forms.py:89
 msgid "Please use a different username."
 msgstr "Por favor, use otro nombre de usuario."
 
-#: app/forms.py:59
+#: app/forms.py:63
 msgid "Please use a different email address."
 msgstr "Por favor, usa un correo electrónico diferente."
 
-#: app/forms.py:65
+#: app/forms.py:69
 msgid "New username"
 msgstr "Nuevo nombre de usuario"
 
-#: app/forms.py:66
+#: app/forms.py:70
 msgid "About me"
 msgstr "Acerca de mí"
 
-#: app/forms.py:67
+#: app/forms.py:71
 msgid "Update profile"
 msgstr "Actualizar perfil"
 
-#: app/forms.py:93
+#: app/forms.py:97
 msgid "Submit"
 msgstr "Enviar"
 
-#: app/forms.py:100
+#: app/forms.py:104
 msgid "Say something..."
 msgstr "Comparte algo..."
 
-#: app/forms.py:102
+#: app/forms.py:106 app/templates/_form_new_post.html:37
 msgid "Post"
 msgstr "Publicar"
 
-#: app/forms.py:109
+#: app/forms.py:113
 msgid "Request password reset"
 msgstr "Solicitar restablecimiento de contraseña"
 
-#: app/forms.py:115
+#: app/forms.py:119
 msgid "New password"
 msgstr "Nueva contraseña"
 
-#: app/forms.py:117
+#: app/forms.py:121
 msgid "Confirm new password"
 msgstr "Confirmar nueva contraseña"
 
-#: app/forms.py:119
+#: app/forms.py:127
 msgid "Reset password"
 msgstr "Restablecer contraseña"
 
@@ -193,10 +196,22 @@ msgstr ""
 msgid "Dismiss"
 msgstr "Descartar"
 
+#: app/templates/_form_new_post.html:28
+msgid "characters"
+msgstr "caracteres"
+
 #: app/templates/_post.html:10
 #, python-format
 msgid "Profile avatar for %(username)s"
 msgstr "Avatar de perfil para %(username)s"
+
+#: app/templates/_show_posts.html:22
+msgid "Previous"
+msgstr "Anterior"
+
+#: app/templates/_show_posts.html:35
+msgid "Next"
+msgstr "Siguiente"
 
 #: app/templates/base.html:9
 msgid "Welcome to Microblog!"
@@ -226,7 +241,141 @@ msgstr "Mi perfil"
 msgid "Log Out"
 msgstr "Cerrar sesión"
 
+#: app/templates/edit_profile.html:4
+msgid "Edit your profile"
+msgstr "Actualizar tu perfil"
+
+#: app/templates/edit_profile.html:5
+msgid "Changed your mind?"
+msgstr "¿Has cambiado de opinión?"
+
+#: app/templates/edit_profile.html:6
+msgid "Return to profile"
+msgstr "Regresar al perfil"
+
 #: app/templates/index.html:7
 #, python-format
 msgid "Hi, %(username)s!"
 msgstr "¡Hola, %(username)s!"
+
+#: app/templates/login.html:5
+msgid "Don't have an account yet?"
+msgstr "¿Aún no tienes una cuenta?"
+
+#: app/templates/login.html:6
+msgid "Click to register!"
+msgstr "¡Da click para registrarte!"
+
+#: app/templates/login.html:9
+msgid "Forgot your password?"
+msgstr "¿Olvidaste tu contraseña?"
+
+#: app/templates/login.html:11
+msgid "Click to reset it"
+msgstr "Da click para restablecerla"
+
+#: app/templates/register.html:5
+msgid "Already have an account?"
+msgstr "¿Ya tienes una cuenta?"
+
+#: app/templates/register.html:6 app/templates/reset_password.html:6
+#: app/templates/reset_password_request.html:6
+msgid "Sign in here"
+msgstr "Inicia sesión aquí"
+
+#: app/templates/reset_password.html:4
+msgid "Reset your password"
+msgstr "Restablece tu contraseña"
+
+#: app/templates/reset_password.html:5
+#: app/templates/reset_password_request.html:5
+msgid "Remember your password?"
+msgstr "¿Recordaste tu contraseña?"
+
+#: app/templates/reset_password_request.html:4
+msgid "Forgot password?"
+msgstr "¿Olvidaste tu contraseña?"
+
+#: app/templates/user.html:15
+msgid "User avatar"
+msgstr "Avatar del usuario"
+
+#: app/templates/user.html:34 app/templates/user.html:37
+msgid "Edit profile"
+msgstr "Actualizar perfil"
+
+#: app/templates/user.html:55
+msgid "Follow user"
+msgstr "Seguir al usuario"
+
+#: app/templates/user.html:60
+msgid "Follow"
+msgstr "Seguir"
+
+#: app/templates/user.html:78
+msgid "Unfollow user"
+msgstr "Dejar de seguir al usuario"
+
+#: app/templates/user.html:83
+msgid "Unfollow"
+msgstr "Dejar de seguir"
+
+#: app/templates/user.html:94
+msgid "Last active:"
+msgstr "Última actividad:"
+
+#: app/templates/user.html:111
+msgid "followers"
+msgstr "seguidores"
+
+#: app/templates/user.html:115
+msgid "following"
+msgstr "siguiendo"
+
+#: app/templates/email/reset_password.html:6
+msgid "Microblog | Password Reset"
+msgstr "Microblog | Restablecer Contraseña"
+
+#: app/templates/email/reset_password.html:9
+#: app/templates/email/reset_password.txt:1
+#, python-format
+msgid "Dear %(username)s,"
+msgstr "Hola %(username)s,"
+
+#: app/templates/email/reset_password.html:11
+msgid "To reset your password, please "
+msgstr "Para restablecer su contraseña, por favor "
+
+#: app/templates/email/reset_password.html:13
+msgid "click here"
+msgstr "de click aquí"
+
+#: app/templates/email/reset_password.html:17
+msgid ""
+"Alternatively, you can paste the following link in your browser's address"
+" bar:"
+msgstr ""
+"Si lo prefiere, puede pegar el siguiente enlace en la barra de "
+"direcciones de su navegador:"
+
+#: app/templates/email/reset_password.html:21
+#: app/templates/email/reset_password.txt:7
+msgid "If you have not requested a password reset simply ignore this message."
+msgstr ""
+"Si no ha solicitado el restablecimiento de su contraseña, simplemente "
+"ignore este mensaje."
+
+#: app/templates/email/reset_password.html:23
+#: app/templates/email/reset_password.txt:9
+msgid "Sincerely,"
+msgstr "Atentamente,"
+
+#: app/templates/email/reset_password.html:24
+#: app/templates/email/reset_password.txt:10
+msgid "The Microblog Team"
+msgstr "El Equipo de Microblog"
+
+#: app/templates/email/reset_password.txt:3
+msgid "To reset your password click on the following link:"
+msgstr "Para restablecer su contraseña, haga clic en el siguiente enlace:"
+

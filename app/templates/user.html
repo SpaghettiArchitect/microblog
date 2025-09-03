@@ -12,7 +12,7 @@
         <div class="shrink-0">
           <img
             src="{{ user.avatar(64) }}"
-            alt="Profile avatar for {{ user.username }}"
+            alt="{{ _('User avatar') }}"
             class="shrink-0 size-16 rounded-full"
           />
         </div>
@@ -31,10 +31,10 @@
       <a
         type="button"
         class="{{ button_style }}"
-        aria-label="Edit profile"
+        aria-label="{{ _('Edit profile') }}"
         href="{{ url_for('edit_profile') }}"
       >
-        <span class="hidden sm:block">Edit profile</span>
+        <span class="hidden sm:block">{{ _('Edit profile') }}</span>
         <span
           class="icon-[tabler--edit] shrink-0 size-4"
           aria-hidden="true"
@@ -52,12 +52,12 @@
       </form>
       <button
         class="{{ button_style }}"
-        aria-label="Follow user"
+        aria-label="{{ _('Follow user') }}"
         form="follow"
         type="submit"
         name="{{ form.submit.name }}"
       >
-        <span class="hidden sm:block">Follow</span>
+        <span class="hidden sm:block">{{ _('Follow') }}</span>
         <span
           aria-hidden="true"
           class="icon-[tabler--user-plus] shrink-0 size-4"
@@ -75,12 +75,12 @@
       </form>
       <button
         class="{{ button_style }}"
-        aria-label="Unfollow user"
+        aria-label="{{ _('Unfollow user') }}"
         form="unfollow"
         type="submit"
         name="{{ form.submit.name }}"
       >
-        <span class="hidden sm:block">Unfollow</span>
+        <span class="hidden sm:block">{{ _('Unfollow') }}</span>
         <span
           aria-hidden="true"
           class="icon-[tabler--user-x] shrink-0 size-4"
@@ -91,7 +91,7 @@
     </div>
     {%- if user.last_seen %}
     <p class="text-sm text-gray-500 dark:text-neutral-500">
-      Last active: {{ moment(user.last_seen).fromNow() }}
+      {{ _('Last active:') }} {{ moment(user.last_seen).fromNow() }}
     </p>
     {%- endif %}
     <!-- End Profile -->
@@ -108,11 +108,11 @@
     <div class="mt-2 flex flex-wrap items-start gap-2">
       <p class="text-sm text-gray-800 dark:text-neutral-200">
         {{ user.followers_count() }}
-        <span class="text-gray-600 dark:text-neutral-400">followers</span>
+        <span class="text-gray-600 dark:text-neutral-400">{{ _('followers') }}</span>
       </p>
       <p class="text-sm text-gray-800 dark:text-neutral-200">
         {{ user.following_count() }}
-        <span class="text-gray-600 dark:text-neutral-400">following</span>
+        <span class="text-gray-600 dark:text-neutral-400">{{ _('following') }}</span>
       </p>
     </div>
     <!-- End Followers and Links -->

@@ -1,6 +1,6 @@
 {% extends "simple_form.html" %}
 {% set go_back_link = url_for("user", username=current_user.username) %}
 
-{% block form_title %}Edit your profile{% endblock %}
-{% block form_subtitle %}Changed your mind?{% endblock %}
-{% block form_subtitle_link %}Return to profile{% endblock %}
+{% block form_title %}{{ _('Edit your profile') }}{% endblock %}
+{% block form_subtitle %}{{ _('Changed your mind?') }}{% endblock %}
+{% block form_subtitle_link %}{{ _('Return to profile') }}{% endblock %}

@@ -25,7 +25,7 @@
   <!-- Toolbar -->
   <div class="flex flex-wrap justify-between items-start gap-2">
     <p class="flex gap-x-1 text-sm text-gray-500 dark:text-neutral-500">
-      <span id="new-post-chars">{{ form.post.flags.maxlength }}</span>characters
+      <span id="new-post-chars">{{ form.post.flags.maxlength }}</span>{{ _('characters') }}
     </p>
     <div class="flex items-center">
       <button
@@ -34,7 +34,7 @@
         type="submit"
         name="{{ form.submit.name }}"
       >
-        Post
+        {{ _('Post') }}
         <span class="icon-[tabler--send] shrink-0 size-4"></span>
       </button>
     </div>
