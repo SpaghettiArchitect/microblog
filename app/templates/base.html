@@ -133,7 +133,7 @@
             class="flex flex-col gap-5 mt-5 sm:flex-row sm:items-center sm:mt-0 sm:ps-5"
           >
             <a
-              {% if title == "Home" %}
+              {% if request.endpoint == "index" %}
                 class="font-medium text-blue-500 focus:outline-hidden"
                 aria-current="page"
               {% else %}
@@ -143,7 +143,7 @@
               >{{ _('Home') }}</a
             >
             <a
-              {% if title == "Explore" %}
+              {% if request.endpoint == "explore" %}
                 class="font-medium text-blue-500 focus:outline-hidden"
                 aria-current="page"
               {% else %}
@@ -169,7 +169,7 @@
     <script src="{{ url_for('serve_preline_js') }}"></script>
     {{ moment.include_moment() }}
     {{ moment.lang(g.locale) }}
-    {%- if current_user.is_authenticated and title == "Home" %}
+    {%- if current_user.is_authenticated and request.endpoint == "index" %}
     <script src="{{ url_for('static', filename='js/calcTextareaCharsLeft.min.js') }}"></script>
     {%- endif %}
   </body>
