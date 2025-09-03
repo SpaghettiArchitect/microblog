@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-02 21:51-0600\n"
-"PO-Revision-Date: 2025-09-02 22:06-0600\n"
+"POT-Creation-Date: 2025-09-02 22:23-0600\n"
+"PO-Revision-Date: 2025-09-02 22:26-0600\n"
 "Last-Translator: \n"
 "Language-Team: es <LL@li.org>\n"
 "Language: es\n"
@@ -113,7 +113,7 @@ msgstr "Inicio"
 
 #: app/routes.py:95
 msgid "Invalid username or password"
-msgstr "El nombre de usuario o la contraseña son incorrectos."
+msgstr "El nombre de usuario o la contraseña son incorrectos"
 
 #: app/routes.py:106
 msgid "Sign In"
@@ -121,51 +121,70 @@ msgstr "Iniciar sesión"
 
 #: app/routes.py:133
 msgid "Congratulations, you are now a registered user!"
-msgstr "¡Felicidades! Ahora eres un usuario registrado."
+msgstr "¡Felicidades, ahora eres un usuario registrado!"
 
-#: app/routes.py:188
+#: app/routes.py:189
 msgid "Your changes have been saved."
 msgstr "Tus cambios han sido guardados."
 
-#: app/routes.py:196
+#: app/routes.py:197
 msgid "Edit Profile"
 msgstr "Actualizar perfil"
 
-#: app/routes.py:208 app/routes.py:233
+#: app/routes.py:209 app/routes.py:234
 #, python-format
 msgid "User %(username)s not found."
 msgstr "El usuario %(username)s no existe."
 
-#: app/routes.py:211
+#: app/routes.py:212
 msgid "You cannot follow yourself!"
 msgstr "¡No puedes seguirte a ti mismo!"
 
-#: app/routes.py:217
+#: app/routes.py:218
 #, python-format
 msgid "You are now following %(username)s!"
 msgstr "¡Ahora sigues a %(username)s!"
 
-#: app/routes.py:236
+#: app/routes.py:237
 msgid "You cannot unfollow yourself!"
 msgstr "¡No puedes dejar de seguirte a ti mismo!"
 
-#: app/routes.py:242
+#: app/routes.py:243
 #, python-format
 msgid "You stopped following %(username)s."
 msgstr "Dejaste de seguir a %(username)s."
 
-#: app/routes.py:265
+#: app/routes.py:266
 msgid "Explore"
 msgstr "Explorar"
 
-#: app/routes.py:283
+#: app/routes.py:284
 msgid "Check your email for the instructions to reset your password."
-msgstr "Revisa tu correo electrónico para obtener las instrucciones del restablecimiento de tu contraseña."
+msgstr ""
+"Revisa tu correo electrónico para obtener las instrucciones del "
+"restablecimiento de tu contraseña."
 
-#: app/routes.py:288
+#: app/routes.py:289
 msgid "Reset Password"
 msgstr "Restablecer contraseña"
 
-#: app/routes.py:307
+#: app/routes.py:308
 msgid "Your password has been reset."
 msgstr "Tu contraseña ha sido restablecida."
+
+#: app/templates/404.html:5
+msgid "Sorry, we couldn't find your page."
+msgstr "Lo sentimos, no hemos podido encontrar tu página."
+
+#: app/templates/404.html:6 app/templates/500.html:8
+msgid "Back to home page"
+msgstr "Volver al inicio"
+
+#: app/templates/500.html:6
+msgid ""
+"The server encountered an internal error or misconfiguration and was "
+"unable to make your request. The administrator has been notified."
+msgstr ""
+"El servidor ha experimentado un error interno o una configuración "
+"incorrecta y no ha podido completar tu solicitud. El administrador "
+"ha sido notificado."

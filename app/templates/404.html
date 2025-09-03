@@ -2,5 +2,5 @@
 {%- set go_back_url = url_for("index") %}
 
 {%- block error %}404{%- endblock %}
-{%- block description %}Sorry, we couldn't find your page.{%- endblock %}
-{%- block button_text %}Back to home page{%- endblock %}
+{%- block description %}{{ _("Sorry, we couldn't find your page.") }}{%- endblock %}
+{%- block button_text %}{{ _("Back to home page") }}{%- endblock %}
