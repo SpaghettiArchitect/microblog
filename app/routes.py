@@ -14,6 +14,7 @@ from flask import (
 )
 from flask_babel import _, get_locale
 from flask_login import current_user, login_required, login_user, logout_user
+from langdetect import LangDetectException, detect
 
 from app import app, db
 from app.email import send_password_reset_email
@@ -49,7 +50,11 @@ def index() -> str:
     """
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(body=form.post.data, author=current_user)
+        try:
+            language = detect(form.post.data)
+        except LangDetectException:
+            language = ""
+        post = Post(body=form.post.data, author=current_user, language=language)
         db.session.add(post)
         db.session.commit()
         flash(_("Your post is now live!"))
