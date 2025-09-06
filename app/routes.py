@@ -28,6 +28,7 @@ from app.forms import (
     ResetPasswordRequestForm,
 )
 from app.models import Post, User
+from app.translate import translate
 
 
 @app.before_request
@@ -37,6 +38,14 @@ def before_request() -> None:
         current_user.last_seen = datetime.now(timezone.utc)
         db.session.commit()
     g.locale = str(get_locale())
+
+
+@app.route("/translate", methods=["POST"])
+@login_required
+def translate_text() -> dict[str, str]:
+    """Translate a text from a source language to a destination language."""
+    data = request.get_json()
+    return {"text": translate(data["text"], data["src_lang"], data["dest_lang"])}
 
 
 @app.route("/", methods=["GET", "POST"])

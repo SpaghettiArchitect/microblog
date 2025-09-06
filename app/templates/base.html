@@ -169,6 +169,7 @@
     <script src="{{ url_for('serve_preline_js') }}"></script>
     {{ moment.include_moment() }}
     {{ moment.lang(g.locale) }}
+    <script src="{{ url_for('static', filename='js/translatePost.min.js') }}"></script>
     {%- if current_user.is_authenticated and request.endpoint == "index" %}
     <script src="{{ url_for('static', filename='js/calcTextareaCharsLeft.min.js') }}"></script>
     {%- endif %}

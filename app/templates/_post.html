@@ -20,8 +20,33 @@
       </a>
     </div>
   </div>
-  <p class="text-sm text-gray-700 dark:text-neutral-400">{{ post.body }}</p>
-  <p class="mt-2 text-xs text-gray-500 dark:text-neutral-500">
-    {{ moment(post.timestamp).format('LLL') }}
-  </p>
+  <p id="post{{ post.id }}" class="text-sm text-gray-700 dark:text-neutral-400">{{ post.body }}</p>
+  <div class="mt-2 flex flex-wrap justify-between items-center gap-2">
+    <p class="text-xs text-gray-500 dark:text-neutral-500">
+      {{ moment(post.timestamp).format('LLL') }}
+    </p>
+    <!-- Translation Link -->
+    {% if post.language and post.language != g.locale %}
+    <span id="link{{ post.id }}" class="flex items-center">
+      <a 
+        href="#"
+        class="translate-link inline-flex items-center gap-x-1 text-xs text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-blue-500"
+        data-label="{{ _('Loading') }}"
+        data-post-id="{{ post.id }}"
+        data-language="{{ post.language }}"
+        data-locale="{{ g.locale }}"
+      >
+        <span class="icon-[tabler--language-hiragana] shrink-0 size-4"></span>
+        {{ _('Translate') }}
+      </a>
+    </span>
+    <!-- End Translation Link -->
+    {% endif %}
+  </div>
+  <!-- Translation Text -->
+  <div class="hidden">
+    <div class="pt-2 flex items-center text-xs text-gray-400 uppercase before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6 dark:text-neutral-500 dark:before:border-neutral-600 dark:after:border-neutral-600">{{ _('Translation') }}</div>
+    <p id="translation{{ post.id }}" class="text-sm text-gray-700 dark:text-neutral-400"></p>
+  </div>
+  <!-- End Translation Text -->
 </div>
