@@ -1,5 +1,5 @@
 {% extends "simple_form.html" %}
-{% set go_back_link = url_for("register") %}
+{% set go_back_link = url_for("auth.register") %}
 
 {% block form_title %}{{ _("Sign in") }}{% endblock %}
 {% block form_subtitle %}{{ _("Don't have an account yet?") }}{% endblock %}
@@ -8,6 +8,6 @@
 <p class="mt-4 text-sm text-gray-600 dark:text-neutral-400">
   {{ _('Forgot your password?') }}
   <a class="text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-blue-500"
-  href="{{ url_for('reset_password_request') }}">{{ _("Click to reset it") }}</a>
+  href="{{ url_for('auth.reset_password_request') }}">{{ _("Click to reset it") }}</a>
 </p>
 {% endblock %}

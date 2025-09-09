@@ -1,5 +1,4 @@
 from datetime import datetime, timezone
-from urllib.parse import urlsplit
 
 import sqlalchemy as sa
 from flask import (
@@ -13,19 +12,14 @@ from flask import (
     url_for,
 )
 from flask_babel import _, get_locale
-from flask_login import current_user, login_required, login_user, logout_user
+from flask_login import current_user, login_required
 from langdetect import LangDetectException, detect
 
 from app import app, db
-from app.email import send_password_reset_email
 from app.forms import (
     EditProfileForm,
     EmptyForm,
-    LoginForm,
     PostForm,
-    RegistrationForm,
-    ResetPasswordForm,
-    ResetPasswordRequestForm,
 )
 from app.models import Post, User
 from app.translate import translate
@@ -87,67 +81,6 @@ def index() -> str:
         next_url=next_url,
         prev_url=prev_url,
     )
-
-
-@app.route("/login", methods=["GET", "POST"])
-def login() -> Response | str:
-    """Render and validate the data on the login form.
-
-    If the data for the user and their password is correct, logs the user in.
-    """
-    if current_user.is_authenticated:
-        return redirect(url_for("index"))
-
-    form = LoginForm()
-
-    if form.validate_on_submit():
-        user = db.session.scalar(
-            sa.select(User).where(User.username == form.username.data)
-        )
-
-        if user is None or not user.check_password(form.password.data):
-            flash(_("Invalid username or password"))
-            return redirect(url_for("login"))
-
-        login_user(user, remember=form.remember_me.data)
-
-        next_page = request.args.get("next")
-        if not next_page or urlsplit(next_page).netloc != "":
-            next_page = url_for("index")
-
-        return redirect(next_page)
-
-    return render_template("login.html", title=_("Sign In"), form=form)
-
-
-@app.route("/logout")
-def logout() -> Response:
-    """Logs out the current user, and redirects to the index page."""
-    logout_user()
-    return redirect(url_for("index"))
-
-
-@app.route("/register", methods=["GET", "POST"])
-def register() -> Response | str:
-    """Render and validate the data on the register form.
-
-    If the data provided is valid, creates a new user in the database
-    and redirects to the login page.
-    """
-    if current_user.is_authenticated:
-        return redirect(url_for("index"))
-
-    form = RegistrationForm()
-
-    if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        flash(_("Congratulations, you are now a registered user!"))
-        return redirect(url_for("login"))
-
-    return render_template("register.html", title=_("Register"), form=form)
 
 
 @app.route("/user/<username>")
@@ -282,47 +215,6 @@ def explore() -> str:
         next_url=next_url,
         prev_url=prev_url,
     )
-
-
-@app.route("/reset_password_request", methods=["GET", "POST"])
-def reset_password_request() -> Response | str:
-    """Render the form to request a password reset."""
-    if current_user.is_authenticated:
-        return redirect(url_for("index"))
-
-    form = ResetPasswordRequestForm()
-    if form.validate_on_submit():
-        user = db.session.scalar(sa.select(User).where(User.email == form.email.data))
-        if user:
-            send_password_reset_email(user)
-        flash(_("Check your email for the instructions to reset your password."))
-        return redirect(url_for("login"))
-
-    return render_template(
-        "reset_password_request.html",
-        title=_("Reset Password"),
-        form=form,
-    )
-
-
-@app.route("/reset_password/<token>", methods=["GET", "POST"])
-def reset_password(token: str) -> Response | str:
-    """Render the form to reset the password using a token sent by email."""
-    if current_user.is_authenticated:
-        return redirect(url_for("index"))
-
-    user = User.verify_reset_password_token(token)
-    if not user:
-        return redirect(url_for("index"))
-
-    form = ResetPasswordForm()
-    if form.validate_on_submit():
-        user.set_password(form.password.data)
-        db.session.commit()
-        flash(_("Your password has been reset."))
-        return redirect(url_for("login"))
-
-    return render_template("reset_password.html", form=form)
 
 
 @app.route("/preline.js")
