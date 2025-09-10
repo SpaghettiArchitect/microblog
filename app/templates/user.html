@@ -32,7 +32,7 @@
         type="button"
         class="{{ button_style }}"
         aria-label="{{ _('Edit profile') }}"
-        href="{{ url_for('edit_profile') }}"
+        href="{{ url_for('main.edit_profile') }}"
       >
         <span class="hidden sm:block">{{ _('Edit profile') }}</span>
         <span
@@ -45,7 +45,7 @@
       <form
         id="follow"
         class="hidden"
-        action="{{ url_for('follow', username=user.username) }}"
+        action="{{ url_for('main.follow', username=user.username) }}"
         method="post"
       >
         {{ form.hidden_tag() }}
@@ -68,7 +68,7 @@
       <form
         id="unfollow"
         class="hidden"
-        action="{{ url_for('unfollow', username=user.username) }}"
+        action="{{ url_for('main.unfollow', username=user.username) }}"
         method="post"
       >
         {{ form.hidden_tag() }}

@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 import sqlalchemy as sa
 from flask import (
     Response,
+    current_app,
     flash,
     g,
     redirect,
@@ -15,8 +16,9 @@ from flask_babel import _, get_locale
 from flask_login import current_user, login_required
 from langdetect import LangDetectException, detect
 
-from app import app, db
-from app.forms import (
+from app import db
+from app.main import bp
+from app.main.forms import (
     EditProfileForm,
     EmptyForm,
     PostForm,
@@ -25,7 +27,7 @@ from app.models import Post, User
 from app.translate import translate
 
 
-@app.before_request
+@bp.before_request
 def before_request() -> None:
     """Callback function that is run before each new request is processed."""
     if current_user.is_authenticated:
@@ -34,7 +36,7 @@ def before_request() -> None:
     g.locale = str(get_locale())
 
 
-@app.route("/translate", methods=["POST"])
+@bp.route("/translate", methods=["POST"])
 @login_required
 def translate_text() -> dict[str, str]:
     """Translate a text from a source language to a destination language."""
@@ -42,8 +44,8 @@ def translate_text() -> dict[str, str]:
     return {"text": translate(data["text"], data["src_lang"], data["dest_lang"])}
 
 
-@app.route("/", methods=["GET", "POST"])
-@app.route("/index", methods=["GET", "POST"])
+@bp.route("/", methods=["GET", "POST"])
+@bp.route("/index", methods=["GET", "POST"])
 @login_required
 def index() -> str:
     """Render the home page for Microblog.
@@ -61,17 +63,17 @@ def index() -> str:
         db.session.add(post)
         db.session.commit()
         flash(_("Your post is now live!"))
-        return redirect(url_for("index"))
+        return redirect(url_for("main.index"))
 
     page = request.args.get("page", 1, type=int)
     posts = db.paginate(
         current_user.following_posts(),
         page=page,
-        per_page=app.config["POSTS_PER_PAGE"],
+        per_page=current_app.config["POSTS_PER_PAGE"],
         error_out=True,
     )
-    next_url = url_for("index", page=posts.next_num) if posts.has_next else None
-    prev_url = url_for("index", page=posts.prev_num) if posts.has_prev else None
+    next_url = url_for("main.index", page=posts.next_num) if posts.has_next else None
+    prev_url = url_for("main.index", page=posts.prev_num) if posts.has_prev else None
 
     return render_template(
         "index.html",
@@ -83,7 +85,7 @@ def index() -> str:
     )
 
 
-@app.route("/user/<username>")
+@bp.route("/user/<username>")
 @login_required
 def user(username: str) -> str:
     """Renders the user's profile page."""
@@ -95,16 +97,16 @@ def user(username: str) -> str:
     posts = db.paginate(
         query,
         page=page,
-        per_page=app.config["POSTS_PER_PAGE"],
+        per_page=current_app.config["POSTS_PER_PAGE"],
         error_out=True,
     )
     next_url = (
-        url_for("user", username=user.username, page=posts.next_num)
+        url_for("main.user", username=user.username, page=posts.next_num)
         if posts.has_next
         else None
     )
     prev_url = (
-        url_for("user", username=user.username, page=posts.prev_num)
+        url_for("main.user", username=user.username, page=posts.prev_num)
         if posts.has_prev
         else None
     )
@@ -122,7 +124,7 @@ def user(username: str) -> str:
     )
 
 
-@app.route("/edit_profile", methods=["GET", "POST"])
+@bp.route("/edit_profile", methods=["GET", "POST"])
 @login_required
 def edit_profile() -> Response | str:
     """Render or process the form to edit the user's profile page."""
@@ -134,7 +136,7 @@ def edit_profile() -> Response | str:
         current_user.about_me = form.about_me.data
         db.session.commit()
         flash(_("Your changes have been saved."))
-        return redirect(url_for("user", username=current_user.username))
+        return redirect(url_for("main.user", username=current_user.username))
     # Provides the initial version of the form pre-populated with the
     # information of the user.
     elif request.method == "GET":
@@ -144,7 +146,7 @@ def edit_profile() -> Response | str:
     return render_template("edit_profile.html", title=_("Edit Profile"), form=form)
 
 
-@app.route("/follow/<username>", methods=["POST"])
+@bp.route("/follow/<username>", methods=["POST"])
 @login_required
 def follow(username: str) -> Response:
     """Make the current user follow another user."""
@@ -154,21 +156,21 @@ def follow(username: str) -> Response:
         user = db.session.scalar(sa.select(User).where(User.username == username))
         if user is None:
             flash(_("User %(username)s not found.", username=username))
-            return redirect(url_for("index"))
+            return redirect(url_for("main.index"))
         if user == current_user:
             flash(_("You cannot follow yourself!"))
-            return redirect(url_for("user", username=username))
+            return redirect(url_for("main.user", username=username))
 
         # Make the current user follow the requested user.
         current_user.follow(user)
         db.session.commit()
         flash(_("You are now following %(username)s!", username=username))
-        return redirect(url_for("user", username=username))
+        return redirect(url_for("main.user", username=username))
     else:
-        return redirect(url_for("index"))
+        return redirect(url_for("main.index"))
 
 
-@app.route("/unfollow/<username>", methods=["POST"])
+@bp.route("/unfollow/<username>", methods=["POST"])
 @login_required
 def unfollow(username: str) -> Response:
     """Make the current user unfollow another user."""
@@ -179,21 +181,21 @@ def unfollow(username: str) -> Response:
         user = db.session.scalar(sa.select(User).where(User.username == username))
         if user is None:
             flash(_("User %(username)s not found.", username=username))
-            return redirect(url_for("index"))
+            return redirect(url_for("main.index"))
         if user == current_user:
             flash(_("You cannot unfollow yourself!"))
-            return redirect(url_for("user", username=username))
+            return redirect(url_for("main.user", username=username))
 
         # Unfollow the requested user.
         current_user.unfollow(user)
         db.session.commit()
         flash(_("You stopped following %(username)s.", username=username))
-        return redirect(url_for("user", username=username))
+        return redirect(url_for("main.user", username=username))
     else:
-        return redirect(url_for("index"))
+        return redirect(url_for("main.index"))
 
 
-@app.route("/explore")
+@bp.route("/explore")
 @login_required
 def explore() -> str:
     """Render the page to explore all posts from all users."""
@@ -202,11 +204,11 @@ def explore() -> str:
     posts = db.paginate(
         query,
         page=page,
-        per_page=app.config["POSTS_PER_PAGE"],
+        per_page=current_app.config["POSTS_PER_PAGE"],
         error_out=True,
     )
-    next_url = url_for("explore", page=posts.next_num) if posts.has_next else None
-    prev_url = url_for("explore", page=posts.prev_num) if posts.has_prev else None
+    next_url = url_for("main.explore", page=posts.next_num) if posts.has_next else None
+    prev_url = url_for("main.explore", page=posts.prev_num) if posts.has_prev else None
 
     return render_template(
         "index.html",
@@ -217,7 +219,7 @@ def explore() -> str:
     )
 
 
-@app.route("/preline.js")
+@bp.route("/preline.js")
 def serve_preline_js() -> Response:
     """Serve the preline.js file from the node_modules directory."""
     return send_from_directory("node_modules/preline/dist", "preline.js")

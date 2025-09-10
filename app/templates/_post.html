@@ -2,7 +2,7 @@
   class="p-4 sm:p-5 first:border-none border-t border-gray-200 dark:border-neutral-700"
 >
   <div class="mb-2 flex w-full sm:items-center gap-x-3">
-    <a href="{{ url_for('user', username=post.author.username) }}">
+    <a href="{{ url_for('main.user', username=post.author.username) }}">
       <div class="shrink-0">
         <img
           class="size-8 rounded-full"
@@ -14,7 +14,7 @@
     <div class="grow">
       <a
         class="font-semibold decoration-2 hover:underline focus:outline-hidden focus:underline text-gray-900 dark:text-neutral-200"
-        href="{{ url_for('user', username=post.author.username) }}"
+        href="{{ url_for('main.user', username=post.author.username) }}"
       >
         {{ post.author.username }}
       </a>

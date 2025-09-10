@@ -24,7 +24,7 @@ def login() -> Response | str:
     If the data for the user and their password is correct, logs the user in.
     """
     if current_user.is_authenticated:
-        return redirect(url_for("index"))
+        return redirect(url_for("main.index"))
 
     form = LoginForm()
 
@@ -41,7 +41,7 @@ def login() -> Response | str:
 
         next_page = request.args.get("next")
         if not next_page or urlsplit(next_page).netloc != "":
-            next_page = url_for("index")
+            next_page = url_for("main.index")
 
         return redirect(next_page)
 
@@ -52,7 +52,7 @@ def login() -> Response | str:
 def logout() -> Response:
     """Logs out the current user, and redirects to the index page."""
     logout_user()
-    return redirect(url_for("index"))
+    return redirect(url_for("main.index"))
 
 
 @bp.route("/register", methods=["GET", "POST"])
@@ -63,7 +63,7 @@ def register() -> Response | str:
     and redirects to the login page.
     """
     if current_user.is_authenticated:
-        return redirect(url_for("index"))
+        return redirect(url_for("main.index"))
 
     form = RegistrationForm()
 
@@ -82,7 +82,7 @@ def register() -> Response | str:
 def reset_password_request() -> Response | str:
     """Render the form to request a password reset."""
     if current_user.is_authenticated:
-        return redirect(url_for("index"))
+        return redirect(url_for("main.index"))
 
     form = ResetPasswordRequestForm()
     if form.validate_on_submit():
@@ -103,11 +103,11 @@ def reset_password_request() -> Response | str:
 def reset_password(token: str) -> Response | str:
     """Render the form to reset the password using a token sent by email."""
     if current_user.is_authenticated:
-        return redirect(url_for("index"))
+        return redirect(url_for("main.index"))
 
     user = User.verify_reset_password_token(token)
     if not user:
-        return redirect(url_for("index"))
+        return redirect(url_for("main.index"))
 
     form = ResetPasswordForm()
     if form.validate_on_submit():
