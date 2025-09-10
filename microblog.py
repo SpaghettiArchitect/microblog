@@ -2,11 +2,13 @@ import sqlalchemy as sa
 import sqlalchemy.orm as so
 
 from app import (
-    app,
     cli,  # noqa: F401
+    create_app,
     db,
 )
 from app.models import Post, User
+
+app = create_app()
 
 
 @app.shell_context_processor

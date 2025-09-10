@@ -6,10 +6,11 @@ from typing import Optional
 import jwt
 import sqlalchemy as sa
 import sqlalchemy.orm as so
+from flask import current_app
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from app import app, db, login
+from app import db, login
 
 # Association table that links a user with another user, to create a
 # follower-following many-to-many relationship.
@@ -139,7 +140,7 @@ class User(UserMixin, db.Model):
         """
         return jwt.encode(
             {"reset_password": self.id, "exp": time() + expires_in},
-            app.config["SECRET_KEY"],
+            current_app.config["SECRET_KEY"],
             algorithm="HS256",
         )
 
@@ -149,9 +150,9 @@ class User(UserMixin, db.Model):
         if the token is valid. If the token is invalid or expired, returns None.
         """
         try:
-            id = jwt.decode(token, app.config["SECRET_KEY"], algorithms=["HS256"])[
-                "reset_password"
-            ]
+            id = jwt.decode(
+                token, current_app.config["SECRET_KEY"], algorithms=["HS256"]
+            )["reset_password"]
         except Exception:
             return
 

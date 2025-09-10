@@ -1,17 +1,19 @@
 import uuid
 
 import requests
+from flask import current_app
 from flask_babel import _
-
-from app import app
 
 
 def translate(text: str, src_lang: str, dest_lang: str) -> str:
     """Translate text from the source language to the destination language."""
-    if "TRANSLATOR_KEY" not in app.config or not app.config["TRANSLATOR_KEY"]:
+    if (
+        "TRANSLATOR_KEY" not in current_app.config
+        or not current_app.config["TRANSLATOR_KEY"]
+    ):
         return _("Error: the translation service is not configured.")
 
-    key = app.config["TRANSLATOR_KEY"]
+    key = current_app.config["TRANSLATOR_KEY"]
     endpoint = "https://api.cognitive.microsofttranslator.com"
 
     path = "/translate"
