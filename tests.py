@@ -1,12 +1,14 @@
-import os
-
-os.environ["DATABASE_URL"] = "sqlite://"
-
 import unittest
 from datetime import datetime, timedelta, timezone
 
-from app import app, db
+from app import create_app, db
 from app.models import Post, User
+from config import Config
+
+
+class TestConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = "sqlite://"
 
 
 class UserModelCase(unittest.TestCase):
@@ -14,7 +16,8 @@ class UserModelCase(unittest.TestCase):
 
     def setUp(self):
         """Create the app context and the database."""
-        self.app_context = app.app_context()
+        self.app = create_app(TestConfig)
+        self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
 
@@ -22,6 +25,7 @@ class UserModelCase(unittest.TestCase):
         """Remove the app context and drop the database."""
         db.session.remove()
         db.drop_all()
+        db.engine.dispose()
         self.app_context.pop()
 
     def test_password_hashing(self):
