@@ -1,27 +1,42 @@
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 
-load_dotenv()  # Take all environment variables.
+basedir = Path(__file__).resolve().parent
+load_dotenv(basedir / ".env")  # Take all environment variables.
 
-basedir = os.path.abspath(os.path.dirname(__file__))
+
+def get_env(key, default=None, cast=str):
+    """Get an environment variable and cast it to a specific type."""
+    value = os.getenv(key, default)
+    return cast(value) if value is not None else default
 
 
 class Config:
-    SECRET_KEY = os.environ.get("SECRET_KEY") or "you-will-never-guess"
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        "DATABASE_URL"
-    ) or "sqlite:///" + os.path.join(basedir, "app.db")
+    """Base configuration."""
 
-    MAIL_SERVER = os.environ.get("MAIL_SERVER")
-    MAIL_PORT = int(os.environ.get("MAIL_PORT") or 25)
-    MAIL_USE_TLS = os.environ.get("MAIL_USE_TLS") is not None
-    MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
-    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
-    ADMINS = [admin.strip() for admin in os.environ.get("ADMINS").split("\n")]
+    # Security
+    SECRET_KEY = get_env("SECRET_KEY", "you-will-never-guess")
 
+    # Database
+    SQLALCHEMY_DATABASE_URI = (
+        get_env("DATABASE_URL") or f"sqlite:///{(basedir / 'app.db').as_posix()}"
+    )
+
+    # Mail
+    MAIL_SERVER = get_env("MAIL_SERVER")
+    MAIL_PORT = get_env("MAIL_PORT", 25, int)
+    MAIL_USE_TLS = get_env(
+        "MAIL_USE_TLS", False, lambda v: v.lower() in ("true", "1", "yes")
+    )
+    MAIL_USERNAME = get_env("MAIL_USERNAME")
+    MAIL_PASSWORD = get_env("MAIL_PASSWORD")
+    ADMINS = [
+        admin.strip() for admin in os.getenv("ADMINS", "").splitlines() if admin.strip()
+    ]
+
+    # App
     POSTS_PER_PAGE = 20
-
     LANGUAGES = ["en", "es"]
-
-    TRANSLATOR_KEY = os.environ.get("TRANSLATOR_KEY")
+    TRANSLATOR_KEY = get_env("TRANSLATOR_KEY")
