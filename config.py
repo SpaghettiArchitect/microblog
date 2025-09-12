@@ -13,6 +13,13 @@ def get_env(key, default=None, cast=str):
     return cast(value) if value is not None else default
 
 
+def to_bool(value):
+    """Convert a string to a boolean."""
+    if isinstance(value, bool):
+        return value
+    return str(value).lower() in ("true", "1", "yes")
+
+
 class Config:
     """Base configuration."""
 
@@ -27,9 +34,7 @@ class Config:
     # Mail
     MAIL_SERVER = get_env("MAIL_SERVER")
     MAIL_PORT = get_env("MAIL_PORT", 25, int)
-    MAIL_USE_TLS = get_env(
-        "MAIL_USE_TLS", False, lambda v: v.lower() in ("true", "1", "yes")
-    )
+    MAIL_USE_TLS = get_env("MAIL_USE_TLS", False, to_bool)
     MAIL_USERNAME = get_env("MAIL_USERNAME")
     MAIL_PASSWORD = get_env("MAIL_PASSWORD")
     ADMINS = [
