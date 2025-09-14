@@ -2,6 +2,7 @@ import logging
 from logging.handlers import RotatingFileHandler, SMTPHandler
 from pathlib import Path
 
+from elasticsearch import Elasticsearch
 from flask import Flask, current_app, request
 from flask_babel import Babel
 from flask_babel import lazy_gettext as _l
@@ -40,6 +41,11 @@ def create_app(config_class=Config) -> Flask:
     mail.init_app(app)
     moment.init_app(app)
     babel.init_app(app, locale_selector=get_locale)
+    app.elasticsearch = (
+        Elasticsearch([app.config["ELASTICSEARCH_URL"]])
+        if app.config["ELASTICSEARCH_URL"]
+        else None
+    )
 
     # Registration of blueprints.
     from app.errors import bp as errors_bp  # noqa: E402

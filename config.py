@@ -45,3 +45,6 @@ class Config:
     POSTS_PER_PAGE = 20
     LANGUAGES = ["en", "es"]
     TRANSLATOR_KEY = get_env("TRANSLATOR_KEY")
+
+    # Search
+    ELASTICSEARCH_URL = get_env("ELASTICSEARCH_URL")
