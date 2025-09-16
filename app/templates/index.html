@@ -2,11 +2,13 @@
 
 {%- block content %}
   <div class="grid gap-y-2 sm:gap-y-4">
-    <h1 class="text-4xl dark:text-white">
+    <h1 class="text-3xl sm:text-4xl dark:text-white">
       {%- if request.endpoint == "main.index" %}
       {{ _('Hi, %(username)s!', username=current_user.username) }}
       {%- elif request.endpoint == "main.explore" %}
       {{ _('Explore') }}
+      {%- elif request.endpoint == "main.search" %}
+      {{ _('Search results') }}
       {%- endif %}
     </h1>
     {%- if form %}
@@ -14,6 +16,10 @@
     {%- endif %}
     {%- if posts %}
       {%- include "_show_posts.html" %}
+    {%- else %}
+    <p class="p-4 sm:p-5 mt-4 text-sm text-gray-700 dark:text-neutral-400 border border-gray-200 shadow-xs rounded-xl dark:border-neutral-700 dark:shadow-neutral-700/70">
+      No posts found.
+    </p>
     {%- endif %}
   </div>
 {%- endblock %}

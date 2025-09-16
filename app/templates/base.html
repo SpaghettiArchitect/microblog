@@ -17,17 +17,40 @@
   </head>
   <body class="dark:bg-neutral-900">
     <header
-      class="sticky top-0 inset-x-0 flex flex-wrap z-100 sm:justify-start sm:flex-nowrap w-full text-sm py-3 bg-white border-b border-gray-200 dark:bg-neutral-900 dark:border-neutral-700"
+      class="sticky top-0 inset-x-0 flex flex-wrap z-50 sm:justify-start sm:flex-nowrap w-full text-sm py-3 bg-white border-b border-gray-200 dark:bg-neutral-900 dark:border-neutral-700"
     >
       <nav
-        class="max-w-[85rem] w-full mx-auto px-4 flex flex-wrap basis-full items-center justify-between"
+        class="relative max-w-7xl w-full flex flex-wrap lg:grid lg:grid-cols-12 basis-full items-center px-4 md:px-6 lg:px-8 mx-auto"
       >
-        <a
-          class="sm:order-1 flex-none text-xl font-semibold dark:text-white focus:outline-hidden focus:opacity-80"
-          href="{{ url_for('main.index') }}"
-          >Microblog</a
-        >
-        <div class="sm:order-3 flex items-center gap-x-2">
+        <div class="lg:col-span-3 flex items-center">
+          <a
+            class="flex-none rounded-xl text-lg sm:text-xl font-semibold dark:text-white inline-block focus:outline-hidden focus:opacity-80"
+            href="{{ url_for('main.index') }}"
+            >Microblog</a
+          >
+        </div>
+        <div class="flex items-center gap-x-1 lg:gap-x-2 ms-auto py-1 lg:ps-6 lg:order-3 lg:col-span-3">
+          {% if g.search_form %}
+          <!-- Search Box -->
+          <div class="flex justify-center">
+            <div id="searchContainer" class="relative">
+              <button id="searchButton" type="button"
+                class="font-medium text-gray-800 rounded-full hover:bg-gray-200 focus:outline-hidden focus:bg-gray-200 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
+                <span class="group inline-flex shrink-0 justify-center items-center size-9">
+                  <span class="icon-[tabler--search] shrink-0 size-4"></span>
+                </span>
+              </button>
+              <form id="searchForm" class="relative hidden opacity-0 transition-all duration-300 ease-in-out" method="get" action="{{ url_for('main.search') }}">
+                <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-2 sm:ps-3.5">
+                  <span class="icon-[tabler--search] shrink-0 size-4 text-gray-400 dark:text-white/60"></span>
+                </div>
+                {{ g.search_form.q(id="searchInput", class="py-1.5 sm:py-2 ps-8 sm:ps-10 pe-3 sm:pe-4 w-26 sm:w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600",
+                placeholder=g.search_form.q.label.text) }}
+              </form>
+            </div>
+          </div>
+          <!-- End Search Box -->
+          {% endif %}
           <!-- Theme Switcher -->
           <button type="button" class="hs-dark-mode-active:hidden block hs-dark-mode font-medium text-gray-800 rounded-full hover:bg-gray-200 focus:outline-hidden focus:bg-gray-200 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" data-hs-theme-click-value="dark">
             <span class="group inline-flex shrink-0 justify-center items-center size-9">
@@ -43,7 +66,7 @@
           <!-- Menu Toggle -->
           <button
             type="button"
-            class="sm:hidden hs-collapse-toggle relative size-9 flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/10"
+            class="lg:hidden hs-collapse-toggle relative size-9 flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/10"
             id="hs-navbar-alignment-collapse"
             aria-expanded="false"
             aria-controls="hs-navbar-alignment"
@@ -52,7 +75,7 @@
           >
             <span class="icon-[tabler--menu-2] hs-collapse-open:hidden shrink-0 size-4"></span>
             <span class="icon-[tabler--x] hs-collapse-open:block hidden shrink-0 size-4"></span>
-            <span class="sr-only">{{ _('Toggle') }}</span>
+            <span class="sr-only">{{ _('Toggle Menu') }}</span>
           </button>
           <!-- End Menu Toggle -->
           {% if current_user.is_anonymous %}
@@ -126,11 +149,11 @@
         </div>
         <div
           id="hs-navbar-alignment"
-          class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow sm:grow-0 sm:basis-auto sm:block sm:order-2"
+          class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow lg:block lg:w-auto lg:basis-auto lg:order-2 lg:col-span-6"
           aria-labelledby="hs-navbar-alignment-collapse"
         >
           <div
-            class="flex flex-col gap-5 mt-5 sm:flex-row sm:items-center sm:mt-0 sm:ps-5"
+            class="flex flex-col gap-y-4 gap-x-0 mt-5 lg:flex-row lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 lg:mt-0"
           >
             <a
               {% if request.endpoint == "main.index" %}
@@ -170,6 +193,7 @@
     {{ moment.include_moment() }}
     {{ moment.lang(g.locale) }}
     <script src="{{ url_for('static', filename='js/translatePost.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/toggleSearch.min.js') }}"></script>
     {%- if current_user.is_authenticated and request.endpoint == "main.index" %}
     <script src="{{ url_for('static', filename='js/calcTextareaCharsLeft.min.js') }}"></script>
     {%- endif %}

@@ -1,8 +1,10 @@
 import sqlalchemy as sa
+from flask import request
 from flask_babel import _
 from flask_babel import lazy_gettext as _l
 from flask_wtf import FlaskForm
 from wtforms import (
+    SearchField,
     StringField,
     SubmitField,
     TextAreaField,
@@ -54,3 +56,16 @@ class PostForm(FlaskForm):
         _l("Say something..."), validators=[DataRequired(), Length(min=1, max=140)]
     )
     submit = SubmitField(_l("Post"))
+
+
+class SearchForm(FlaskForm):
+    """Form to search information in the site."""
+
+    q = SearchField(_l("Search"), validators=[DataRequired()])
+
+    def __init__(self, *args, **kwargs):
+        if "formdata" not in kwargs:
+            kwargs["formdata"] = request.args
+        if "meta" not in kwargs:
+            kwargs["meta"] = {"csrf": False}
+        super(SearchForm, self).__init__(*args, **kwargs)
