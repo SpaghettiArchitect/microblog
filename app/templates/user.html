@@ -27,7 +27,8 @@
       bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-hidden
       focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none
       dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20
-      dark:focus:bg-blue-800/20" %} {%- if user == current_user %}
+      dark:focus:bg-blue-800/20" %}
+      {%- if user == current_user %}
       <a
         type="button"
         class="{{ button_style }}"
@@ -120,6 +121,14 @@
   <!-- Posts -->
   {%- if posts %}
     {%- include "_show_posts.html" %}
+  {%- else %}
+    <p class="p-4 sm:p-5 mt-4 text-sm text-gray-700 dark:text-neutral-400 border border-gray-200 shadow-xs rounded-xl dark:border-neutral-700 dark:shadow-neutral-700/70">
+      {%- if user == current_user %}
+        {{ _("You haven't posted yet.") }}
+      {%- else %}
+        {{ _('This user has not posted yet.') }}
+      {%- endif %}
+    </p>
   {%- endif %}
   <!-- End Posts -->
 </div>
