@@ -1,0 +1,52 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Local development databases
+*.db
+
+# Secrets
+*.env
+
+# Flask logs
+logs/*
+!logs/.gitkeep
+
+# Ignore JavaScript modules and pnpm workspace file (only needed for development)
+node_modules/
+app/node_modules/
+app/pnpm-workspace.yaml
+
+# Git files
+.git/
+.gitignore
+
+# Docker files (prevent recursive copies)
+Dockerfile
+.dockerignore
+
+# Development files
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
