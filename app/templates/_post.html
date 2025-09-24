@@ -12,12 +12,29 @@
       </div>
     </a>
     <div class="grow">
-      <a
-        class="font-semibold decoration-2 hover:underline focus:outline-hidden focus:underline text-gray-900 dark:text-neutral-200"
-        href="{{ url_for('main.user', username=post.author.username) }}"
-      >
-        {{ post.author.username }}
-      </a>
+      <!-- Popover -->
+      <div class="hs-tooltip [--trigger:hover] [--placement:right] inline-block">
+        <div class="hs-tooltip-toggle block cursor-pointer">
+          <a
+            class="font-semibold decoration-2 hover:underline focus:outline-hidden focus:underline text-gray-900 dark:text-neutral-200"
+            href="{{ url_for('main.user', username=post.author.username) }}"
+          >
+            {{ post.author.username }}
+          </a>
+          <!-- Profile Card -->
+           <div class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity absolute invisible z-10 max-w-xs cursor-default bg-white divide-y divide-gray-400 shadow-lg rounded-xl dark:bg-neutral-950 dark:divide-neutral-700" role="tooltip">
+            <div class="flex flex-auto flex-col justify-center items-center p-4 md:p-5">
+              <div class="flex justify-center">
+                <div class="animate-spin inline-block size-6 border-3 border-current border-t-transparent text-blue-600 rounded-full dark:text-blue-500" role="status" aria-label="loading">
+                  <span class="sr-only">{{ _('Loading') }}</span>
+                </div>
+              </div>
+            </div>
+           </div>
+          <!-- End Profile Card -->
+        </div>
+      </div>
+      <!-- End Popover -->
     </div>
   </div>
   <p id="post{{ post.id }}" class="text-sm text-gray-700 dark:text-neutral-400">{{ post.body }}</p>

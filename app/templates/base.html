@@ -197,5 +197,6 @@
     {%- if current_user.is_authenticated and request.endpoint == "main.index" %}
     <script src="{{ url_for('static', filename='js/calcTextareaCharsLeft.min.js') }}"></script>
     {%- endif %}
+    <script src="{{ url_for('static', filename='js/showPopover.js') }}"></script>
   </body>
 </html>

@@ -126,6 +126,15 @@ def user(username: str) -> str:
     )
 
 
+@bp.route("/user/<username>/popup")
+@login_required
+def user_popup(username) -> str:
+    """Renders a small popup with the user's information."""
+    user = db.first_or_404(sa.select(User).where(User.username == username))
+    form = EmptyForm()
+    return render_template("user_popup.html", user=user, form=form)
+
+
 @bp.route("/edit_profile", methods=["GET", "POST"])
 @login_required
 def edit_profile() -> Response | str:
