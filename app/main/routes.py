@@ -265,4 +265,8 @@ def search():
 @bp.route("/preline.js")
 def serve_preline_js() -> Response:
     """Serve the preline.js file from the node_modules directory."""
-    return send_from_directory("node_modules/preline/dist", "preline.js")
+    return send_from_directory(
+        current_app.config["PRELINE_JS_DIR"],
+        "preline.js",
+        mimetype="application/javascript",
+    )

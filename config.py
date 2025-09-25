@@ -48,3 +48,6 @@ class Config:
 
     # Search
     ELASTICSEARCH_URL = get_env("ELASTICSEARCH_URL")
+
+    # Directory for preline.js file
+    PRELINE_JS_DIR = get_env("PRELINE_JS_DIR", "node_modules/preline/dist")

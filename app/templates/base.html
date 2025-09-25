@@ -13,7 +13,7 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/output.css') }}"
     />
-    <script src="{{ url_for('static', filename='js/themeSwitch.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/themeSwitch.js') }}"></script>
   </head>
   <body class="dark:bg-neutral-900">
     <header
@@ -192,10 +192,10 @@
     <script src="{{ url_for('main.serve_preline_js') }}"></script>
     {{ moment.include_moment() }}
     {{ moment.lang(g.locale) }}
-    <script src="{{ url_for('static', filename='js/translatePost.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/toggleSearch.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/translatePost.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/toggleSearch.js') }}"></script>
     {%- if current_user.is_authenticated and request.endpoint == "main.index" %}
-    <script src="{{ url_for('static', filename='js/calcTextareaCharsLeft.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/calcTextareaCharsLeft.js') }}"></script>
     {%- endif %}
     <script src="{{ url_for('static', filename='js/showPopover.js') }}"></script>
   </body>

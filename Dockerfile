@@ -4,8 +4,12 @@ FROM python:slim
 RUN apt-get update && apt-get install -y curl && \
     curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
     apt-get install -y nodejs && \
-    npm install -g pnpm && \
+    corepack enable && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Set environment variables that pnpm needs to function
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
 
 # Copy app directory with frontend files
 COPY app /microblog/app
@@ -14,6 +18,28 @@ COPY app /microblog/app
 WORKDIR /microblog/app
 RUN pnpm install --frozen-lockfile
 RUN pnpm build
+
+# Install terser globally for JavaScript minification
+RUN pnpm add -g terser
+
+# Minify all JavaScript files in app/static/js (preserving original names)
+RUN if [ -d "static/js" ]; then \
+    for file in static/js/*.js; do \
+        if [ -f "$file" ]; then \
+            terser "$file" --compress --mangle -o "$file"; \
+        fi \
+    done \
+    fi
+
+# Copy preline.js to a permanent location before removing node_modules
+RUN mkdir -p static/vendor && \
+    cp node_modules/preline/dist/preline.js static/vendor/preline.js
+
+# Clean up node_modules and package files as they're no longer needed
+RUN rm -rf node_modules package.json pnpm-lock.yaml
+
+# Remove terser
+RUN pnpm remove -g terser
 
 # Go back to root directory
 WORKDIR /
@@ -55,8 +81,12 @@ RUN uv add gunicorn
 # Make boot script executable
 RUN chmod a+x boot.sh
 
-# Place executables in the environment at the front of the path
+# Basic environment variables that the app needs to function correctly.
 ENV FLASK_APP=microblog.py
+ENV PRELINE_JS_DIR=static/vendor
+
+# Place executables in the environment at the front of the path
+# (so the Python environment doesn't need to be activated).
 ENV PATH="/microblog/.venv/bin:$PATH"
 
 # Translate the application
