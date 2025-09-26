@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% import "_form_helpers.html" as fh %}
+
+{% block content %}
+    <h1>{{ _("Send Message to %(recipient)s", recipient=recipient) }}</h1>
+    {{ fh.quick_form(form) }}
+{% endblock %}

@@ -105,7 +105,7 @@
     </div>
     {%- endif %}
     <!-- End About Me -->
-    <!-- Followers and Links -->
+    <!-- Followers and Following -->
     <div class="mt-2 flex flex-wrap items-start gap-2">
       <p class="text-sm text-gray-800 dark:text-neutral-200">
         {{ user.followers_count() }}
@@ -116,7 +116,14 @@
         <span class="text-gray-600 dark:text-neutral-400">{{ _('following') }}</span>
       </p>
     </div>
-    <!-- End Followers and Links -->
+    <!-- End Followers and Following -->
+    <!-- Message Link -->
+    {% if user != current_user %}
+    <a href="{{ url_for('main.send_message', recipient=user.username) }}">
+      {{ _("Send private message") }}
+    </a>
+    {% endif %}
+    <!-- End Message Link -->
   </div>
   <!-- Posts -->
   {%- if posts %}
