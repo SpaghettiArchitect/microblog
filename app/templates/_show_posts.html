@@ -3,9 +3,16 @@
   id="posts-container"
   class="mt-4 border border-gray-200 shadow-xs rounded-xl dark:border-neutral-700 dark:shadow-neutral-700/70"
 >
-  {%- for post in posts %}
-    {%- include "_post.html" %}
-  {%- endfor %}
+  {# Reuses the same template for messages and posts #}
+  {%- if messages %}
+    {%- for post in messages %}
+      {%- include "_post.html" %}
+    {%- endfor %}
+  {%- else %}
+    {%- for post in posts %}
+      {%- include "_post.html" %}
+    {%- endfor %}
+  {%- endif %}
 </div>
 <!-- End Posts -->
 <!-- Pagination -->

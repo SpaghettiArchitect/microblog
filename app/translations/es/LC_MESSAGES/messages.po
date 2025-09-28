@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-26 00:08-0600\n"
-"PO-Revision-Date: 2025-09-26 00:09-0600\n"
+"POT-Creation-Date: 2025-09-27 23:46-0600\n"
+"PO-Revision-Date: 2025-09-27 23:40-0600\n"
 "Last-Translator: \n"
-"Language-Team: es <LL@li.org>\n"
 "Language: es\n"
+"Language-Team: es <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Generated-By: Babel 2.17.0\n"
-"X-Generator: Poedit 3.7\n"
 
 #: app/__init__.py:21
 msgid "Please sign in to access this page."
@@ -143,7 +142,7 @@ msgstr "Comparte algo..."
 msgid "Post"
 msgstr "Publicar"
 
-#: app/main/forms.py:64 app/main/routes.py:259
+#: app/main/forms.py:64 app/main/routes.py:261
 msgid "Search"
 msgstr "Buscar"
 
@@ -151,57 +150,62 @@ msgstr "Buscar"
 msgid "Message"
 msgstr "Mensaje"
 
-#: app/main/routes.py:68
+#: app/main/routes.py:69
 msgid "Your post is now live!"
 msgstr "¡Tu publicación ya está disponible!"
 
-#: app/main/routes.py:83 app/templates/base.html:166
+#: app/main/routes.py:84 app/templates/base.html:175
 msgid "Home"
 msgstr "Inicio"
 
-#: app/main/routes.py:150
+#: app/main/routes.py:151
 msgid "Your changes have been saved."
 msgstr "Tus cambios han sido guardados."
 
-#: app/main/routes.py:158
+#: app/main/routes.py:159
 msgid "Edit Profile"
 msgstr "Actualizar perfil"
 
-#: app/main/routes.py:170 app/main/routes.py:195
+#: app/main/routes.py:171 app/main/routes.py:196
 #, python-format
 msgid "User %(username)s not found."
 msgstr "El usuario %(username)s no existe."
 
-#: app/main/routes.py:173
+#: app/main/routes.py:174
 msgid "You cannot follow yourself!"
 msgstr "¡No puedes seguirte a ti mismo!"
 
-#: app/main/routes.py:179
+#: app/main/routes.py:180
 #, python-format
 msgid "You are now following %(username)s!"
 msgstr "¡Ahora sigues a %(username)s!"
 
-#: app/main/routes.py:198
+#: app/main/routes.py:199
 msgid "You cannot unfollow yourself!"
 msgstr "¡No puedes dejar de seguirte a ti mismo!"
 
-#: app/main/routes.py:204
+#: app/main/routes.py:205
 #, python-format
 msgid "You stopped following %(username)s."
 msgstr "Dejaste de seguir a %(username)s."
 
-#: app/main/routes.py:227 app/templates/base.html:176
+#: app/main/routes.py:228 app/templates/base.html:185
 #: app/templates/index.html:9
 msgid "Explore"
 msgstr "Explorar"
 
-#: app/main/routes.py:276
+#: app/main/routes.py:279
 msgid "Your message has been sent."
 msgstr "Tu mensaje ha sido enviado."
 
-#: app/main/routes.py:280
+#: app/main/routes.py:283
 msgid "Send message"
 msgstr "Enviar mensaje"
+
+#: app/main/routes.py:311 app/templates/base.html:144
+#: app/templates/messages.html:6
+msgid "Messages"
+msgstr "Mensajes"
 
 #: app/templates/_alert_info.html:24
 msgid "Dismiss"
@@ -228,11 +232,11 @@ msgstr "Traducir"
 msgid "Translation"
 msgstr "Traducción"
 
-#: app/templates/_show_posts.html:23
+#: app/templates/_show_posts.html:30
 msgid "Previous"
 msgstr "Anterior"
 
-#: app/templates/_show_posts.html:36
+#: app/templates/_show_posts.html:43
 msgid "Next"
 msgstr "Siguiente"
 
@@ -260,7 +264,7 @@ msgstr "Conectado como"
 msgid "Profile"
 msgstr "Mi perfil"
 
-#: app/templates/base.html:142
+#: app/templates/base.html:151
 msgid "Log Out"
 msgstr "Cerrar sesión"
 
@@ -288,6 +292,10 @@ msgstr "Resultados de búsqueda"
 #: app/templates/index.html:21
 msgid "No posts found."
 msgstr "No se han encontrado publicaciones."
+
+#: app/templates/messages.html:12
+msgid "No messages found."
+msgstr "No se encontraron mensajes."
 
 #: app/templates/send_message.html:5
 #, python-format
@@ -400,11 +408,11 @@ msgstr "de click aquí"
 
 #: app/templates/email/reset_password.html:17
 msgid ""
-"Alternatively, you can paste the following link in your browser's address "
-"bar:"
+"Alternatively, you can paste the following link in your browser's address"
+" bar:"
 msgstr ""
-"Si lo prefiere, puede pegar el siguiente enlace en la barra de direcciones "
-"de su navegador:"
+"Si lo prefiere, puede pegar el siguiente enlace en la barra de "
+"direcciones de su navegador:"
 
 #: app/templates/email/reset_password.html:21
 #: app/templates/email/reset_password.txt:7
@@ -437,12 +445,12 @@ msgstr "Volver al inicio"
 
 #: app/templates/errors/500.html:6
 msgid ""
-"The server encountered an internal error or misconfiguration and was unable "
-"to make your request. The administrator has been notified."
+"The server encountered an internal error or misconfiguration and was "
+"unable to make your request. The administrator has been notified."
 msgstr ""
 "El servidor ha experimentado un error interno o una configuración "
-"incorrecta y no ha podido completar tu solicitud. El administrador ha sido "
-"notificado."
+"incorrecta y no ha podido completar tu solicitud. El administrador ha "
+"sido notificado."
 
 #~ msgid "Done"
 #~ msgstr "Listo"
@@ -452,3 +460,4 @@ msgstr ""
 
 #~ msgid "Loading..."
 #~ msgstr "Cargando"
+

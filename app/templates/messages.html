@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{%- block content %}
+  <div class="grid gap-y-2 sm:gap-y-4">
+    <h1 class="text-3xl sm:text-4xl dark:text-white">
+      {{ _("Messages") }}
+    </h1>
+    {%- if messages %}
+      {%- include "_show_posts.html" %}
+    {%- else %}
+    <p class="p-4 sm:p-5 mt-4 text-sm text-gray-700 dark:text-neutral-400 border border-gray-200 shadow-xs rounded-xl dark:border-neutral-700 dark:shadow-neutral-700/70">
+      {{ _('No messages found.') }}
+    </p>
+    {%- endif %}
+  </div>
+{%- endblock %}

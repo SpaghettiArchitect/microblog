@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from typing import Union
 
 import sqlalchemy as sa
 from flask import (
@@ -129,7 +130,7 @@ def user(username: str) -> str:
 
 @bp.route("/user/<username>/popup")
 @login_required
-def user_popup(username) -> str:
+def user_popup(username: str) -> str:
     """Renders a small popup with the user's information."""
     user = db.first_or_404(sa.select(User).where(User.username == username))
     form = EmptyForm()
@@ -138,7 +139,7 @@ def user_popup(username) -> str:
 
 @bp.route("/edit_profile", methods=["GET", "POST"])
 @login_required
-def edit_profile() -> Response | str:
+def edit_profile() -> Union[Response, str]:
     """Render or process the form to edit the user's profile page."""
     form = EditProfileForm(current_user.username)
 
@@ -233,7 +234,8 @@ def explore() -> str:
 
 @bp.route("/search")
 @login_required
-def search():
+def search() -> Union[Response, str]:
+    """Render the search results page."""
     if not g.search_form.validate():
         return redirect(url_for("main.explore"))
 
@@ -265,7 +267,8 @@ def search():
 
 @bp.route("/send_message/<recipient>", methods=["GET", "POST"])
 @login_required
-def send_message(recipient):
+def send_message(recipient: str) -> Union[Response, str]:
+    """Render or process the form to send a private message to another user."""
     user = db.first_or_404(sa.select(User).where(User.username == recipient))
 
     form = MessageForm()
@@ -278,6 +281,37 @@ def send_message(recipient):
 
     return render_template(
         "send_message.html", title=_("Send message"), form=form, recipient=recipient
+    )
+
+
+@bp.route("/messages")
+@login_required
+def messages() -> str:
+    """Render the page that shows the private messages received by the user."""
+    # Mark all messages as read.
+    current_user.last_message_read_time = datetime.now(timezone.utc)
+    db.session.commit()
+
+    # Get all the messages, and sort them from newest to oldest.
+    page = request.args.get("page", 1, type=int)
+    query = current_user.messages_received.select().order_by(Message.timestamp.desc())
+    messages = db.paginate(
+        query, page=page, per_page=current_app.config["POSTS_PER_PAGE"], error_out=True
+    )
+
+    next_url = (
+        url_for("main.messages", page=messages.next_num) if messages.has_next else None
+    )
+    prev_url = (
+        url_for("main.messages", page=messages.prev_num) if messages.has_prev else None
+    )
+
+    return render_template(
+        "messages.html",
+        title=_("Messages"),
+        messages=messages.items,
+        next_url=next_url,
+        prev_url=prev_url,
     )
 
 
