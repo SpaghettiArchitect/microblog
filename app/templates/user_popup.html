@@ -38,12 +38,13 @@
     </ul>
 
     <div>
+        {% set btn_class = "py-1.5 px-2.5 inline-flex items-center gap-x-2 text-xs font-normal rounded-full border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" %}
         {% if user != current_user %}
         {% if not current_user.is_following(user) %}
         <form action="{{ url_for('main.follow', username=user.username) }}" method="post">
             {{ form.hidden_tag() }}
             <button type="submit"
-                class="py-1.5 px-2.5 inline-flex items-center gap-x-2 text-xs font-medium rounded-xl border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-hidden focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20">
+                class="{{ btn_class }}">
                 <span aria-hidden="true" class="icon-[tabler--user-plus] shrink-0 size-3.5"></span>
                 {{ _('Follow') }}
             </button>
@@ -52,7 +53,7 @@
         <form action="{{ url_for('main.unfollow', username=user.username) }}" method="post">
             {{ form.hidden_tag() }}
             <button type="submit"
-                class="py-1.5 px-2.5 inline-flex items-center gap-x-2 text-xs font-medium rounded-xl border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-hidden focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20">
+                class="{{ btn_class }}">
                 <span aria-hidden="true" class="icon-[tabler--user-x] shrink-0 size-3.5"></span>
                 {{ _('Unfollow') }}
             </button>

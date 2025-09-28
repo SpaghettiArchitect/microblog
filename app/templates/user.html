@@ -6,7 +6,7 @@
     class="mt-4 p-4 sm:p-5 grid gap-y-2 border border-gray-200 border-b-1 border-b-blue-600 shadow-xs rounded-xl dark:border-neutral-700 dark:border-b-blue-500 dark:shadow-neutral-700/70"
   >
     <!-- Profile -->
-    <div class="flex justify-between">
+    <div class="flex justify-between flex-wrap gap-y-2">
       <!-- Avatar and Title -->
       <div class="flex flex-wrap justify-start items-center gap-x-3">
         <div class="shrink-0">
@@ -21,74 +21,49 @@
         </h1>
       </div>
       <!-- End Avatar and Title -->
-      <!-- Action Button -->
-      {%- set button_style = "self-baseline py-2 px-3 inline-flex items-center
-      gap-x-2 text-sm font-medium rounded-xl border border-transparent
-      bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-hidden
-      focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none
-      dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20
-      dark:focus:bg-blue-800/20" %}
-      {%- if user == current_user %}
-      <a
-        type="button"
-        class="{{ button_style }}"
-        aria-label="{{ _('Edit profile') }}"
-        href="{{ url_for('main.edit_profile') }}"
-      >
-        <span class="hidden sm:block">{{ _('Edit profile') }}</span>
-        <span
-          class="icon-[tabler--edit] shrink-0 size-4"
-          aria-hidden="true"
-        ></span>
-      </a>
-
-      {%- elif not current_user.is_following(user) %}
-      <form
-        id="follow"
-        class="hidden"
-        action="{{ url_for('main.follow', username=user.username) }}"
-        method="post"
-      >
-        {{ form.hidden_tag() }}
-      </form>
-      <button
-        class="{{ button_style }}"
-        aria-label="{{ _('Follow user') }}"
-        form="follow"
-        type="submit"
-        name="{{ form.submit.name }}"
-      >
-        <span class="hidden sm:block">{{ _('Follow') }}</span>
-        <span
-          aria-hidden="true"
-          class="icon-[tabler--user-plus] shrink-0 size-4"
-        ></span>
-      </button>
-
-      {%- else %}
-      <form
-        id="unfollow"
-        class="hidden"
-        action="{{ url_for('main.unfollow', username=user.username) }}"
-        method="post"
-      >
-        {{ form.hidden_tag() }}
-      </form>
-      <button
-        class="{{ button_style }}"
-        aria-label="{{ _('Unfollow user') }}"
-        form="unfollow"
-        type="submit"
-        name="{{ form.submit.name }}"
-      >
-        <span class="hidden sm:block">{{ _('Unfollow') }}</span>
-        <span
-          aria-hidden="true"
-          class="icon-[tabler--user-x] shrink-0 size-4"
-        ></span>
-      </button>
-      {%- endif %}
-      <!-- End Action Button -->
+      <div class="flex flex-wrap justify-start items-center gap-x-3">
+        <!-- Message Link -->
+        {% if user != current_user %}
+        <a class="flex shrink-0 justify-center items-center gap-2 size-8 sm:size-10 text-sm font-medium rounded-full border border-gray-800 text-gray-800 hover:border-gray-500 hover:text-gray-500 focus:outline-hidden focus:border-gray-500 focus:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:border-white dark:text-white dark:hover:text-neutral-300 dark:hover:border-neutral-300"
+          title="{{ _('Send private message') }}" href="{{ url_for('main.send_message', recipient=user.username) }}">
+          <span class="icon-[tabler--mail] shrink-0 size-4 sm:size-5"></span>
+          <span class="sr-only">{{ _("Send private message") }}</span>
+        </a>
+        {% endif %}
+        <!-- End Message Link -->
+        <!-- Action Button -->
+        {%- set button_style = "flex shrink-0 justify-center items-center cursor-pointer gap-2 size-8 sm:size-10 text-sm font-medium
+        rounded-full border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700
+        disabled:opacity-50 disabled:pointer-events-none" %}
+        {%- if user == current_user %}
+        <a type="button" class="{{ button_style }}" aria-label="{{ _('Edit profile') }}"
+          href="{{ url_for('main.edit_profile') }}" title="{{ _('Edit profile') }}">
+          <span class="sr-only">{{ _('Edit profile') }}</span>
+          <span class="icon-[tabler--edit] shrink-0 size-4 sm:size-5" aria-hidden="true"></span>
+        </a>
+      
+        {%- elif not current_user.is_following(user) %}
+        <form id="follow" class="hidden" action="{{ url_for('main.follow', username=user.username) }}" method="post">
+          {{ form.hidden_tag() }}
+        </form>
+        <button class="{{ button_style }}" aria-label="{{ _('Follow user') }}" form="follow" type="submit"
+          name="{{ form.submit.name }}" title="{{ _('Follow') }}">
+          <span class="sr-only">{{ _('Follow') }}</span>
+          <span aria-hidden="true" class="icon-[tabler--user-plus] shrink-0 size-4 sm:size-5"></span>
+        </button>
+      
+        {%- else %}
+        <form id="unfollow" class="hidden" action="{{ url_for('main.unfollow', username=user.username) }}" method="post">
+          {{ form.hidden_tag() }}
+        </form>
+        <button class="{{ button_style }}" aria-label="{{ _('Unfollow user') }}" form="unfollow" type="submit"
+          name="{{ form.submit.name }}" title="{{ _('Unfollow') }}">
+          <span class="sr-only">{{ _('Unfollow') }}</span>
+          <span aria-hidden="true" class="icon-[tabler--user-x] shrink-0 size-4 sm:size-5"></span>
+        </button>
+        {%- endif %}
+        <!-- End Action Button -->
+      </div>
     </div>
     {%- if user.last_seen %}
     <p class="text-sm text-gray-500 dark:text-neutral-500">
@@ -117,13 +92,6 @@
       </p>
     </div>
     <!-- End Followers and Following -->
-    <!-- Message Link -->
-    {% if user != current_user %}
-    <a href="{{ url_for('main.send_message', recipient=user.username) }}">
-      {{ _("Send private message") }}
-    </a>
-    {% endif %}
-    <!-- End Message Link -->
   </div>
   <!-- Posts -->
   {%- if posts %}
