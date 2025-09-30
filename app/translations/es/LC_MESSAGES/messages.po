@@ -7,16 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-27 23:46-0600\n"
-"PO-Revision-Date: 2025-09-27 23:40-0600\n"
+"POT-Creation-Date: 2025-09-29 23:03-0600\n"
+"PO-Revision-Date: 2025-09-29 23:04-0600\n"
 "Last-Translator: \n"
-"Language: es\n"
 "Language-Team: es <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Generated-By: Babel 2.17.0\n"
+"X-Generator: Poedit 3.7\n"
 
 #: app/__init__.py:21
 msgid "Please sign in to access this page."
@@ -154,7 +155,7 @@ msgstr "Mensaje"
 msgid "Your post is now live!"
 msgstr "¡Tu publicación ya está disponible!"
 
-#: app/main/routes.py:84 app/templates/base.html:175
+#: app/main/routes.py:84 app/templates/base.html:185
 msgid "Home"
 msgstr "Inicio"
 
@@ -189,7 +190,7 @@ msgstr "¡No puedes dejar de seguirte a ti mismo!"
 msgid "You stopped following %(username)s."
 msgstr "Dejaste de seguir a %(username)s."
 
-#: app/main/routes.py:228 app/templates/base.html:185
+#: app/main/routes.py:228 app/templates/base.html:195
 #: app/templates/index.html:9
 msgid "Explore"
 msgstr "Explorar"
@@ -202,7 +203,7 @@ msgstr "Tu mensaje ha sido enviado."
 msgid "Send message"
 msgstr "Enviar mensaje"
 
-#: app/main/routes.py:311 app/templates/base.html:144
+#: app/main/routes.py:311 app/templates/base.html:151
 #: app/templates/messages.html:6
 msgid "Messages"
 msgstr "Mensajes"
@@ -256,15 +257,15 @@ msgstr "Mostrar/Ocultar menú"
 msgid "Toggle user menu"
 msgstr "Alternar menú de usuario"
 
-#: app/templates/base.html:119
+#: app/templates/base.html:126
 msgid "Signed in as"
 msgstr "Conectado como"
 
-#: app/templates/base.html:135
+#: app/templates/base.html:142
 msgid "Profile"
 msgstr "Mi perfil"
 
-#: app/templates/base.html:151
+#: app/templates/base.html:161
 msgid "Log Out"
 msgstr "Cerrar sesión"
 
@@ -297,56 +298,67 @@ msgstr "No se han encontrado publicaciones."
 msgid "No messages found."
 msgstr "No se encontraron mensajes."
 
-#: app/templates/send_message.html:5
+#: app/templates/send_message.html:4
 #, python-format
 msgid "Send Message to %(recipient)s"
 msgstr "Enviar mensaje a %(recipient)s"
+
+#: app/templates/send_message.html:5
+msgid "Don't want to send a message?"
+msgstr "¿No quieres enviar un mensaje?"
+
+#: app/templates/send_message.html:6
+msgid "Go back to profile"
+msgstr "Volver al perfil"
 
 #: app/templates/user.html:15
 msgid "User avatar"
 msgstr "Avatar del usuario"
 
-#: app/templates/user.html:35 app/templates/user.html:38
-msgid "Edit profile"
-msgstr "Actualizar perfil"
-
-#: app/templates/user.html:56
-msgid "Follow user"
-msgstr "Seguir al usuario"
-
-#: app/templates/user.html:61 app/templates/user_popup.html:48
-msgid "Follow"
-msgstr "Seguir"
-
-#: app/templates/user.html:79
-msgid "Unfollow user"
-msgstr "Dejar de seguir al usuario"
-
-#: app/templates/user.html:84 app/templates/user_popup.html:57
-msgid "Unfollow"
-msgstr "Dejar de seguir"
-
-#: app/templates/user.html:95 app/templates/user_popup.html:21
-msgid "Last active:"
-msgstr "Última actividad:"
-
-#: app/templates/user.html:112 app/templates/user_popup.html:36
-msgid "followers"
-msgstr "seguidores"
-
-#: app/templates/user.html:116 app/templates/user_popup.html:32
-msgid "following"
-msgstr "siguiendo"
-
-#: app/templates/user.html:123
+#: app/templates/user.html:28 app/templates/user.html:30
 msgid "Send private message"
 msgstr "Enviar mensaje privado"
 
-#: app/templates/user.html:134
+#: app/templates/user.html:39 app/templates/user.html:40
+#: app/templates/user.html:41
+msgid "Edit profile"
+msgstr "Actualizar perfil"
+
+#: app/templates/user.html:49
+msgid "Follow user"
+msgstr "Seguir al usuario"
+
+#: app/templates/user.html:50 app/templates/user.html:51
+#: app/templates/user_popup.html:49
+msgid "Follow"
+msgstr "Seguir"
+
+#: app/templates/user.html:59
+msgid "Unfollow user"
+msgstr "Dejar de seguir al usuario"
+
+#: app/templates/user.html:60 app/templates/user.html:61
+#: app/templates/user_popup.html:58
+msgid "Unfollow"
+msgstr "Dejar de seguir"
+
+#: app/templates/user.html:70 app/templates/user_popup.html:21
+msgid "Last active:"
+msgstr "Última actividad:"
+
+#: app/templates/user.html:87 app/templates/user_popup.html:36
+msgid "followers"
+msgstr "seguidores"
+
+#: app/templates/user.html:91 app/templates/user_popup.html:32
+msgid "following"
+msgstr "siguiendo"
+
+#: app/templates/user.html:102
 msgid "You haven't posted yet."
 msgstr "Aún no has publicado nada."
 
-#: app/templates/user.html:136
+#: app/templates/user.html:104
 msgid "This user has not posted yet."
 msgstr "Este usuario aún no ha publicado nada."
 
@@ -408,11 +420,11 @@ msgstr "de click aquí"
 
 #: app/templates/email/reset_password.html:17
 msgid ""
-"Alternatively, you can paste the following link in your browser's address"
-" bar:"
+"Alternatively, you can paste the following link in your browser's address "
+"bar:"
 msgstr ""
-"Si lo prefiere, puede pegar el siguiente enlace en la barra de "
-"direcciones de su navegador:"
+"Si lo prefiere, puede pegar el siguiente enlace en la barra de direcciones "
+"de su navegador:"
 
 #: app/templates/email/reset_password.html:21
 #: app/templates/email/reset_password.txt:7
@@ -445,12 +457,12 @@ msgstr "Volver al inicio"
 
 #: app/templates/errors/500.html:6
 msgid ""
-"The server encountered an internal error or misconfiguration and was "
-"unable to make your request. The administrator has been notified."
+"The server encountered an internal error or misconfiguration and was unable "
+"to make your request. The administrator has been notified."
 msgstr ""
 "El servidor ha experimentado un error interno o una configuración "
-"incorrecta y no ha podido completar tu solicitud. El administrador ha "
-"sido notificado."
+"incorrecta y no ha podido completar tu solicitud. El administrador ha sido "
+"notificado."
 
 #~ msgid "Done"
 #~ msgstr "Listo"
@@ -460,4 +472,3 @@ msgstr ""
 
 #~ msgid "Loading..."
 #~ msgstr "Cargando"
-

@@ -1,7 +1,6 @@
-{% extends "base.html" %}
-{% import "_form_helpers.html" as fh %}
+{% extends "simple_form.html" %}
+{% set go_back_link = url_for("main.user", username=recipient) %}
 
-{% block content %}
-    <h1>{{ _("Send Message to %(recipient)s", recipient=recipient) }}</h1>
-    {{ fh.quick_form(form) }}
-{% endblock %}
+{% block form_title %}{{ _("Send Message to %(recipient)s", recipient=recipient) }}{% endblock %}
+{% block form_subtitle %}{{ _("Don't want to send a message?") }}{% endblock %}
+{% block form_subtitle_link %}{{ _("Go back to profile") }}{% endblock %}
