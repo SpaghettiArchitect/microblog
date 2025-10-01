@@ -5,7 +5,6 @@ window.addEventListener("load", () => {
     .getElementById("posts-container")
     .addEventListener("mouseover", async (e) => {
       if (!e.target.matches(".hs-tooltip a")) return;
-      console.log(e.target.innerText);
 
       const response = await fetch(`/user/${e.target.innerText.trim()}/popup`);
       const data = await response.text();
