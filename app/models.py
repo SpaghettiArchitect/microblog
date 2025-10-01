@@ -1,7 +1,8 @@
+import json
 from datetime import datetime, timezone
 from hashlib import md5
 from time import time
-from typing import Literal, Optional, Self, Union
+from typing import Any, Literal, Optional, Self, Union
 
 import jwt
 import sqlalchemy as sa
@@ -43,7 +44,7 @@ class SearchableMixin:
         return db.session.scalars(query), total
 
     @classmethod
-    def before_commit(cls, session: so.Session):
+    def before_commit(cls, session: so.Session) -> None:
         """Store the changes to the database in the session object before
         the commit.
         """
@@ -54,7 +55,7 @@ class SearchableMixin:
         }
 
     @classmethod
-    def after_commit(cls, session: so.Session):
+    def after_commit(cls, session: so.Session) -> None:
         """After the commit, update the search index with the changes stored
         in the session object."""
         for obj in session._changes["add"]:
@@ -69,7 +70,7 @@ class SearchableMixin:
         session._changes = None
 
     @classmethod
-    def reindex(cls):
+    def reindex(cls) -> None:
         """Reindex all the records of the model in the search index."""
         for obj in db.session.scalars(sa.select(cls)):
             add_to_index(cls.__tablename__, obj)
@@ -145,6 +146,11 @@ class User(UserMixin, db.Model):
         foreign_keys="Message.recipient_id", back_populates="recipient"
     )
 
+    # Models the relationship between a user and the notifications they have.
+    notifications: so.WriteOnlyMapped["Notification"] = so.relationship(
+        back_populates="user"
+    )
+
     def __repr__(self) -> str:
         """String representation of a User object."""
         return f"<User {self.username}>"
@@ -180,14 +186,14 @@ class User(UserMixin, db.Model):
         query = self.following.select().where(User.id == user.id)
         return db.session.scalar(query) is not None
 
-    def followers_count(self) -> int | None:
+    def followers_count(self) -> Union[int, None]:
         """Return the number of users following the current user."""
         query = sa.select(sa.func.count()).select_from(
             self.followers.select().subquery()
         )
         return db.session.scalar(query)
 
-    def following_count(self) -> int | None:
+    def following_count(self) -> Union[int, None]:
         """Return the number of users the current user is following."""
         query = sa.select(sa.func.count()).select_from(
             self.following.select().subquery()
@@ -238,7 +244,7 @@ class User(UserMixin, db.Model):
 
         return db.session.get(User, id)
 
-    def unread_message_count(self):
+    def unread_message_count(self) -> Union[int, None]:
         """Return the number of unread messages for the user."""
         last_read_time = self.last_message_read_time or datetime(1900, 1, 1)
         query = sa.select(Message).where(
@@ -248,6 +254,17 @@ class User(UserMixin, db.Model):
         return db.session.scalar(
             sa.select(sa.func.count()).select_from(query.subquery())
         )
+
+    def add_notification(self, name: str, data: Any) -> "Notification":
+        """Add a notification with the given name and data to the user.
+
+        If a notification with the same name already exists for the user, it is
+        deleted before adding the new one.
+        """
+        db.session.execute(self.notifications.delete().where(Notification.name == name))
+        n = Notification(name=name, payload_json=json.dumps(data), user=self)
+        db.session.add(n)
+        return n
 
 
 class Post(SearchableMixin, db.Model):
@@ -301,3 +318,20 @@ class Message(db.Model):
 
     def __repr__(self):
         return f"<Message {self.body}>"
+
+
+class Notification(db.Model):
+    """Represents a notification that is generated for a user when some event occurs."""
+
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    name: so.Mapped[str] = so.mapped_column(sa.String(128), index=True)
+    user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(User.id), index=True)
+    timestamp: so.Mapped[float] = so.mapped_column(index=True, default=time)
+    payload_json: so.Mapped[str] = so.mapped_column(sa.Text)
+
+    # Relationship between a notification and the user it belongs to.
+    user: so.Mapped[User] = so.relationship(back_populates="notifications")
+
+    def get_data(self) -> dict:
+        """Return the JSON payload of the notification as a dictionary."""
+        return json.loads(str(self.payload_json))

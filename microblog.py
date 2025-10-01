@@ -6,7 +6,7 @@ from app import (
     create_app,
     db,
 )
-from app.models import Post, User
+from app.models import Message, Notification, Post, User
 
 app = create_app()
 
@@ -16,4 +16,12 @@ def make_shell_context() -> dict:
     """Returns symbols that can be used in the shell context when running
     'flask shell'.
     """
-    return {"sa": sa, "so": so, "db": db, "User": User, "Post": Post}
+    return {
+        "sa": sa,
+        "so": so,
+        "db": db,
+        "User": User,
+        "Post": Post,
+        "Message": Message,
+        "Notification": Notification,
+    }
