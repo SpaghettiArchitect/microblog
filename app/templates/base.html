@@ -105,12 +105,11 @@
                 alt="Avatar"
               />
               {% set unread_message_count = current_user.unread_message_count() %}
-              {% if unread_message_count > 0 %}
-              <span class="flex absolute top-0 end-0 size-2.5">
+              {% set visibility = "visible" if unread_message_count else "hidden" %}
+              <span id="badge1" class="{{ visibility }} flex absolute top-0 end-0 size-2.5">
                 <span class="relative inline-flex rounded-full size-2.5 ring-2 ring-white bg-red-400 dark:ring-neutral-900"></span>
                 <span class="animate-ping absolute inline-flex size-full rounded-full bg-red-400 opacity-75 dark:bg-red-600"></span>
               </span>
-              {% endif %}
             </button>
 
             <div
@@ -149,9 +148,7 @@
                     class="icon-[tabler--message-dots] shrink-0 size-4"
                   ></span>
                   {{ _('Messages') }}
-                  {% if unread_message_count > 0 %}
-                  <span class="inline-flex items-center py-0.5 px-1.5 rounded-full text-xs font-medium bg-red-500 text-white">{{ unread_message_count }}</span>
-                  {% endif %}
+                  <span id="badge2" class="{{ visibility }} items-center py-0.5 px-1.5 rounded-full text-xs font-medium bg-red-500 text-white">{{ unread_message_count }}</span>
                 </a>
                 <a
                   class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
@@ -217,5 +214,8 @@
     <script src="{{ url_for('static', filename='js/calcTextareaCharsLeft.js') }}"></script>
     {%- endif %}
     <script src="{{ url_for('static', filename='js/showPopover.js') }}"></script>
+    {% if current_user.is_authenticated %}
+    <script src="{{ url_for('static', filename='js/showNotifications.js') }}"></script>
+    {% endif %}
   </body>
 </html>

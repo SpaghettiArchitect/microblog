@@ -26,7 +26,7 @@ from app.main.forms import (
     PostForm,
     SearchForm,
 )
-from app.models import Message, Post, User
+from app.models import Message, Notification, Post, User
 from app.translate import translate
 
 
@@ -269,12 +269,13 @@ def search() -> Union[Response, str]:
 @login_required
 def send_message(recipient: str) -> Union[Response, str]:
     """Render or process the form to send a private message to another user."""
-    user = db.first_or_404(sa.select(User).where(User.username == recipient))
+    user: User = db.first_or_404(sa.select(User).where(User.username == recipient))
 
     form = MessageForm()
     if form.validate_on_submit():
         msg = Message(author=current_user, recipient=user, body=form.message.data)
         db.session.add(msg)
+        user.add_notification("unread_message_count", user.unread_message_count())
         db.session.commit()
         flash(_("Your message has been sent."))
         return redirect(url_for("main.user", username=recipient))
@@ -290,6 +291,7 @@ def messages() -> str:
     """Render the page that shows the private messages received by the user."""
     # Mark all messages as read.
     current_user.last_message_read_time = datetime.now(timezone.utc)
+    current_user.add_notification("unread_message_count", 0)
     db.session.commit()
 
     # Get all the messages, and sort them from newest to oldest.
@@ -313,6 +315,31 @@ def messages() -> str:
         next_url=next_url,
         prev_url=prev_url,
     )
+
+
+@bp.route("/notifications")
+@login_required
+def notifications():
+    """Return a list of notifications for the current user since a given timestamp.
+
+    Each notification is represented as a dictionary containing its name, data, and timestamp.
+    """
+    since = request.args.get("since", 0.0, type=float)
+    query = (
+        current_user.notifications.select()
+        .where(Notification.timestamp > since)
+        .order_by(Notification.timestamp.asc())
+    )
+    notifications = db.session.scalars(query)
+
+    return [
+        {
+            "name": n.name,
+            "data": n.get_data(),
+            "timestamp": n.timestamp,
+        }
+        for n in notifications
+    ]
 
 
 @bp.route("/preline.js")
