@@ -270,6 +270,27 @@ class User(UserMixin, db.Model):
         db.session.add(n)
         return n
 
+    def launch_task(self, name: str, description: str, *args, **kwargs) -> "Task":
+        """Launch a task in the background using RQ."""
+        rq_job = current_app.task_queue.enqueue(
+            f"app.tasks.{name}", self.id, *args, **kwargs
+        )
+        task = Task(id=rq_job.get_id(), name=name, description=description, user=self)
+        db.session.add(task)
+        return task
+
+    def get_tasks_in_progress(self) -> sa.ScalarResult["Task"]:
+        """Return all the tasks that are currently in progress for the user."""
+        query = self.tasks.select().where(Task.complete == sa.false())
+        return db.session.scalars(query)
+
+    def get_task_in_progress(self, name: str) -> Union["Task", None]:
+        """Return the task with the given name if it is in progress for the user. Otherwise, return None."""
+        query = self.tasks.select().where(
+            Task.name == name, Task.complete == sa.false()
+        )
+        return db.session.scalar(query)
+
 
 class Post(SearchableMixin, db.Model):
     """Represents the schema of a Post made by a User."""
