@@ -1,17 +1,80 @@
+import json
+import sys
 import time
 
+import sqlalchemy as sa
+from flask import render_template
+from flask_babel import _
 from rq import get_current_job
 
+from app import create_app, db
+from app.email import send_email
+from app.models import Post, Task, User
 
-def example(seconds):
-    """Example task that simulates a long-running process."""
+app = create_app()
+app.app_context.push()
+
+
+def _set_task_progress(progress: int) -> None:
+    """Set the progress of the current task."""
     job = get_current_job()
-    print("Starting task")
-    for i in range(seconds):
-        job.meta["progress"] = 100.0 * 1 / seconds
+
+    if job:
+        job.meta["progress"] = progress
         job.save_meta()
-        print(i)
-        time.sleep(1)
-    job.meta["progress"] = 100
-    job.save_meta()
-    print("Task completed")
+        task = db.session.get(Task, job.get_id())
+        task.user.add_notification(
+            "task_progress", {"task_id": job.get_id(), "progress": progress}
+        )
+
+        if progress >= 100:
+            task.complete = True
+        db.session.commit()
+
+
+def export_posts(user_id: int) -> None:
+    """Export a user's posts to a JSON file and email it to them."""
+    try:
+        # Read user posts from database.
+        user = db.session.get(User, user_id)
+        _set_task_progress(0)
+        total_posts = db.session.scalar(
+            sa.select(sa.func.count()).select_from(user.posts.select().subquery())
+        )
+        data = []
+        i = 0
+        for post in db.session.scalars(
+            user.posts.select().order_by(Post.timestamp.asc())
+        ):
+            data.append(
+                {"body": post.body, "timestamp": post.timestamp.isoformat() + "Z"}
+            )
+            # Makes to export task last longer, for testing purposes.
+            # This will be removed later.
+            time.sleep(5)
+            i += 1
+            _set_task_progress(100 * i // total_posts)
+
+        # Send email with data to user.
+        send_email(
+            _("[Microblog] Your blog posts"),
+            sender=app.config["ADMINS"][0],
+            recipients=[user.email],
+            text_body=render_template("email/export_posts.txt", user=user),
+            html_body=render_template("email/export_posts.html", user=user),
+            attachments=[
+                (
+                    "posts.json",
+                    "application/json",
+                    json.dumps({"posts": data}, indent=4),
+                )
+            ],
+            sync=True,
+        )
+    except Exception:
+        # Handle unexpected errors.
+        _set_task_progress(100)
+        app.logger.error("Unhandled exception", exc_info=sys.exc_info())
+    finally:
+        # Handle clean up.
+        _set_task_progress(100)

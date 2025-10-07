@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-29 23:03-0600\n"
-"PO-Revision-Date: 2025-09-29 23:04-0600\n"
+"POT-Creation-Date: 2025-10-06 23:50-0600\n"
+"PO-Revision-Date: 2025-10-06 23:52-0600\n"
 "Last-Translator: \n"
 "Language-Team: es <LL@li.org>\n"
 "Language: es\n"
@@ -19,9 +19,13 @@ msgstr ""
 "Generated-By: Babel 2.17.0\n"
 "X-Generator: Poedit 3.7\n"
 
-#: app/__init__.py:21
+#: app/__init__.py:23
 msgid "Please sign in to access this page."
 msgstr "Por favor, inicia sesión para acceder a esta página."
+
+#: app/tasks.py:58
+msgid "[Microblog] Your blog posts"
+msgstr "[Microblog] Sus entradas de blog"
 
 #: app/translate.py:14
 msgid "Error: the translation service is not configured."
@@ -155,7 +159,7 @@ msgstr "Mensaje"
 msgid "Your post is now live!"
 msgstr "¡Tu publicación ya está disponible!"
 
-#: app/main/routes.py:84 app/templates/base.html:185
+#: app/main/routes.py:84 app/templates/base.html:182
 msgid "Home"
 msgstr "Inicio"
 
@@ -190,20 +194,20 @@ msgstr "¡No puedes dejar de seguirte a ti mismo!"
 msgid "You stopped following %(username)s."
 msgstr "Dejaste de seguir a %(username)s."
 
-#: app/main/routes.py:228 app/templates/base.html:195
+#: app/main/routes.py:228 app/templates/base.html:192
 #: app/templates/index.html:9
 msgid "Explore"
 msgstr "Explorar"
 
-#: app/main/routes.py:279
+#: app/main/routes.py:280
 msgid "Your message has been sent."
 msgstr "Tu mensaje ha sido enviado."
 
-#: app/main/routes.py:283
+#: app/main/routes.py:284
 msgid "Send message"
 msgstr "Enviar mensaje"
 
-#: app/main/routes.py:311 app/templates/base.html:151
+#: app/main/routes.py:313 app/templates/base.html:150
 #: app/templates/messages.html:6
 msgid "Messages"
 msgstr "Mensajes"
@@ -257,15 +261,15 @@ msgstr "Mostrar/Ocultar menú"
 msgid "Toggle user menu"
 msgstr "Alternar menú de usuario"
 
-#: app/templates/base.html:126
+#: app/templates/base.html:125
 msgid "Signed in as"
 msgstr "Conectado como"
 
-#: app/templates/base.html:142
+#: app/templates/base.html:141
 msgid "Profile"
 msgstr "Mi perfil"
 
-#: app/templates/base.html:161
+#: app/templates/base.html:158
 msgid "Log Out"
 msgstr "Cerrar sesión"
 
@@ -400,15 +404,40 @@ msgstr "¿Recordaste tu contraseña?"
 msgid "Forgot password?"
 msgstr "¿Olvidaste tu contraseña?"
 
-#: app/templates/email/reset_password.html:6
-msgid "Microblog | Password Reset"
-msgstr "Microblog | Restablecer Contraseña"
+#: app/templates/email/export_posts.html:6
+msgid "Microblog | Archived posts"
+msgstr "Microblog | Mensajes archivados"
 
+#: app/templates/email/export_posts.html:10
+#: app/templates/email/export_posts.txt:1
 #: app/templates/email/reset_password.html:9
 #: app/templates/email/reset_password.txt:1
 #, python-format
 msgid "Dear %(username)s,"
 msgstr "Hola %(username)s,"
+
+#: app/templates/email/export_posts.html:12
+#: app/templates/email/export_posts.txt:3
+msgid "Please find attached the archive of your posts that you requested."
+msgstr "Le adjuntamos el archivo de sus mensajes que solicitó."
+
+#: app/templates/email/export_posts.html:14
+#: app/templates/email/export_posts.txt:5
+#: app/templates/email/reset_password.html:23
+#: app/templates/email/reset_password.txt:9
+msgid "Sincerely,"
+msgstr "Atentamente,"
+
+#: app/templates/email/export_posts.html:15
+#: app/templates/email/export_posts.txt:6
+#: app/templates/email/reset_password.html:24
+#: app/templates/email/reset_password.txt:10
+msgid "The Microblog Team"
+msgstr "El Equipo de Microblog"
+
+#: app/templates/email/reset_password.html:6
+msgid "Microblog | Password Reset"
+msgstr "Microblog | Restablecer Contraseña"
 
 #: app/templates/email/reset_password.html:11
 msgid "To reset your password, please "
@@ -432,16 +461,6 @@ msgid "If you have not requested a password reset simply ignore this message."
 msgstr ""
 "Si no ha solicitado el restablecimiento de su contraseña, simplemente "
 "ignore este mensaje."
-
-#: app/templates/email/reset_password.html:23
-#: app/templates/email/reset_password.txt:9
-msgid "Sincerely,"
-msgstr "Atentamente,"
-
-#: app/templates/email/reset_password.html:24
-#: app/templates/email/reset_password.txt:10
-msgid "The Microblog Team"
-msgstr "El Equipo de Microblog"
 
 #: app/templates/email/reset_password.txt:3
 msgid "To reset your password click on the following link:"
