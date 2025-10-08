@@ -1,6 +1,7 @@
-{{ _('Dear %(username)s,', username=user.username) }}
+Dear {{ user.username }},
 
-{{ _('Please find attached the archive of your posts that you requested.') }}
+Please find attached the archive of your posts that you requested.
 
-{{ _('Sincerely,') }}
-{{ _('The Microblog Team') }}
+Sincerely,
+
+The Microblog Team

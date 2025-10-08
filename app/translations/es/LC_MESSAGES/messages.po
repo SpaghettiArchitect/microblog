@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-06 23:50-0600\n"
-"PO-Revision-Date: 2025-10-06 23:52-0600\n"
+"POT-Creation-Date: 2025-10-08 00:02-0600\n"
+"PO-Revision-Date: 2025-10-08 00:06-0600\n"
 "Last-Translator: \n"
 "Language-Team: es <LL@li.org>\n"
 "Language: es\n"
@@ -22,10 +22,6 @@ msgstr ""
 #: app/__init__.py:23
 msgid "Please sign in to access this page."
 msgstr "Por favor, inicia sesión para acceder a esta página."
-
-#: app/tasks.py:58
-msgid "[Microblog] Your blog posts"
-msgstr "[Microblog] Sus entradas de blog"
 
 #: app/translate.py:14
 msgid "Error: the translation service is not configured."
@@ -212,6 +208,14 @@ msgstr "Enviar mensaje"
 msgid "Messages"
 msgstr "Mensajes"
 
+#: app/main/routes.py:324
+msgid "An export task is currently in progress"
+msgstr "Hay una tarea de exportación en curso"
+
+#: app/main/routes.py:326
+msgid "Exporting posts..."
+msgstr "Exportando publicaciones..."
+
 #: app/templates/_alert_info.html:24
 msgid "Dismiss"
 msgstr "Descartar"
@@ -323,46 +327,50 @@ msgstr "Avatar del usuario"
 msgid "Send private message"
 msgstr "Enviar mensaje privado"
 
-#: app/templates/user.html:39 app/templates/user.html:40
-#: app/templates/user.html:41
+#: app/templates/user.html:37 app/templates/user.html:39
+msgid "Export my posts"
+msgstr "Exportar mis publicaciones"
+
+#: app/templates/user.html:48 app/templates/user.html:49
+#: app/templates/user.html:50
 msgid "Edit profile"
 msgstr "Actualizar perfil"
 
-#: app/templates/user.html:49
+#: app/templates/user.html:58
 msgid "Follow user"
 msgstr "Seguir al usuario"
 
-#: app/templates/user.html:50 app/templates/user.html:51
+#: app/templates/user.html:59 app/templates/user.html:60
 #: app/templates/user_popup.html:49
 msgid "Follow"
 msgstr "Seguir"
 
-#: app/templates/user.html:59
+#: app/templates/user.html:68
 msgid "Unfollow user"
 msgstr "Dejar de seguir al usuario"
 
-#: app/templates/user.html:60 app/templates/user.html:61
+#: app/templates/user.html:69 app/templates/user.html:70
 #: app/templates/user_popup.html:58
 msgid "Unfollow"
 msgstr "Dejar de seguir"
 
-#: app/templates/user.html:70 app/templates/user_popup.html:21
+#: app/templates/user.html:79 app/templates/user_popup.html:21
 msgid "Last active:"
 msgstr "Última actividad:"
 
-#: app/templates/user.html:87 app/templates/user_popup.html:36
+#: app/templates/user.html:96 app/templates/user_popup.html:36
 msgid "followers"
 msgstr "seguidores"
 
-#: app/templates/user.html:91 app/templates/user_popup.html:32
+#: app/templates/user.html:100 app/templates/user_popup.html:32
 msgid "following"
 msgstr "siguiendo"
 
-#: app/templates/user.html:102
+#: app/templates/user.html:111
 msgid "You haven't posted yet."
 msgstr "Aún no has publicado nada."
 
-#: app/templates/user.html:104
+#: app/templates/user.html:113
 msgid "This user has not posted yet."
 msgstr "Este usuario aún no ha publicado nada."
 
@@ -404,40 +412,15 @@ msgstr "¿Recordaste tu contraseña?"
 msgid "Forgot password?"
 msgstr "¿Olvidaste tu contraseña?"
 
-#: app/templates/email/export_posts.html:6
-msgid "Microblog | Archived posts"
-msgstr "Microblog | Mensajes archivados"
+#: app/templates/email/reset_password.html:6
+msgid "Microblog | Password Reset"
+msgstr "Microblog | Restablecer Contraseña"
 
-#: app/templates/email/export_posts.html:10
-#: app/templates/email/export_posts.txt:1
 #: app/templates/email/reset_password.html:9
 #: app/templates/email/reset_password.txt:1
 #, python-format
 msgid "Dear %(username)s,"
 msgstr "Hola %(username)s,"
-
-#: app/templates/email/export_posts.html:12
-#: app/templates/email/export_posts.txt:3
-msgid "Please find attached the archive of your posts that you requested."
-msgstr "Le adjuntamos el archivo de sus mensajes que solicitó."
-
-#: app/templates/email/export_posts.html:14
-#: app/templates/email/export_posts.txt:5
-#: app/templates/email/reset_password.html:23
-#: app/templates/email/reset_password.txt:9
-msgid "Sincerely,"
-msgstr "Atentamente,"
-
-#: app/templates/email/export_posts.html:15
-#: app/templates/email/export_posts.txt:6
-#: app/templates/email/reset_password.html:24
-#: app/templates/email/reset_password.txt:10
-msgid "The Microblog Team"
-msgstr "El Equipo de Microblog"
-
-#: app/templates/email/reset_password.html:6
-msgid "Microblog | Password Reset"
-msgstr "Microblog | Restablecer Contraseña"
 
 #: app/templates/email/reset_password.html:11
 msgid "To reset your password, please "
@@ -461,6 +444,16 @@ msgid "If you have not requested a password reset simply ignore this message."
 msgstr ""
 "Si no ha solicitado el restablecimiento de su contraseña, simplemente "
 "ignore este mensaje."
+
+#: app/templates/email/reset_password.html:23
+#: app/templates/email/reset_password.txt:9
+msgid "Sincerely,"
+msgstr "Atentamente,"
+
+#: app/templates/email/reset_password.html:24
+#: app/templates/email/reset_password.txt:10
+msgid "The Microblog Team"
+msgstr "El Equipo de Microblog"
 
 #: app/templates/email/reset_password.txt:3
 msgid "To reset your password click on the following link:"
@@ -491,3 +484,12 @@ msgstr ""
 
 #~ msgid "Loading..."
 #~ msgstr "Cargando"
+
+#~ msgid "[Microblog] Your blog posts"
+#~ msgstr "[Microblog] Sus entradas de blog"
+
+#~ msgid "Microblog | Archived posts"
+#~ msgstr "Microblog | Mensajes archivados"
+
+#~ msgid "Please find attached the archive of your posts that you requested."
+#~ msgstr "Le adjuntamos el archivo de sus mensajes que solicitó."

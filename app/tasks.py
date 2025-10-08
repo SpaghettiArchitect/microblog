@@ -4,7 +4,6 @@ import time
 
 import sqlalchemy as sa
 from flask import render_template
-from flask_babel import _
 from rq import get_current_job
 
 from app import create_app, db
@@ -12,7 +11,7 @@ from app.email import send_email
 from app.models import Post, Task, User
 
 app = create_app()
-app.app_context.push()
+app.app_context().push()
 
 
 def _set_task_progress(progress: int) -> None:
@@ -57,7 +56,7 @@ def export_posts(user_id: int) -> None:
 
         # Send email with data to user.
         send_email(
-            _("[Microblog] Your blog posts"),
+            "[Microblog] Your blog posts",
             sender=app.config["ADMINS"][0],
             recipients=[user.email],
             text_body=render_template("email/export_posts.txt", user=user),
