@@ -1,6 +1,5 @@
 import json
 import sys
-import time
 
 import sqlalchemy as sa
 from flask import render_template
@@ -48,9 +47,6 @@ def export_posts(user_id: int) -> None:
             data.append(
                 {"body": post.body, "timestamp": post.timestamp.isoformat() + "Z"}
             )
-            # Makes to export task last longer, for testing purposes.
-            # This will be removed later.
-            time.sleep(5)
             i += 1
             _set_task_progress(100 * i // total_posts)
 
