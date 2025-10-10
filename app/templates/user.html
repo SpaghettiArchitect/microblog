@@ -32,7 +32,7 @@
         {% endif %}
         <!-- End Message Link -->
         <!-- Export Posts -->
-        {% if not current_user.get_task_in_progress('export_posts') %}
+        {% if user == current_user and not current_user.get_task_in_progress('export_posts') %}
         <a class="flex shrink-0 justify-center items-center gap-2 size-8 sm:size-10 text-sm font-medium rounded-full border border-gray-800 text-gray-800 hover:border-gray-500 hover:text-gray-500 focus:outline-hidden focus:border-gray-500 focus:text-gray-500 disabled:opacity-50 disabled:pointer-events-none dark:border-white dark:text-white dark:hover:text-neutral-300 dark:hover:border-neutral-300"
           title="{{ _('Export my posts') }}" href="{{ url_for('main.export_posts') }}">
           <span class="icon-[tabler--database-export] shrink-0 size-4 sm:size-5"></span>
