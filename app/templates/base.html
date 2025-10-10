@@ -196,6 +196,15 @@
       </nav>
     </header>
     <main class="w-full max-w-md mx-auto p-6">
+      {% if current_user.is_authenticated %}
+        {% with tasks = current_user.get_tasks_in_progress() %}
+          {% if tasks %}
+            {% for task in tasks %}
+              {% include "_task_progress.html" %}
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+      {% endif %}
       {% with messages = get_flashed_messages() %}
         {% if messages %}
           {% for message in messages %}
