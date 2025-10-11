@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-09 23:17-0600\n"
+"POT-Creation-Date: 2025-10-10 23:25-0600\n"
 "PO-Revision-Date: 2025-10-08 00:06-0600\n"
 "Last-Translator: \n"
 "Language: es\n"
@@ -47,7 +47,7 @@ msgid "Remember me"
 msgstr "Recuérdame"
 
 #: app/auth/forms.py:18 app/templates/auth/login.html:4
-#: app/templates/base.html:86
+#: app/templates/base.html:87
 msgid "Sign in"
 msgstr "Iniciar sesión"
 
@@ -154,7 +154,7 @@ msgstr "Mensaje"
 msgid "Your post is now live!"
 msgstr "¡Tu publicación ya está disponible!"
 
-#: app/main/routes.py:84 app/templates/base.html:182
+#: app/main/routes.py:84 app/templates/base.html:183
 msgid "Home"
 msgstr "Inicio"
 
@@ -189,7 +189,7 @@ msgstr "¡No puedes dejar de seguirte a ti mismo!"
 msgid "You stopped following %(username)s."
 msgstr "Dejaste de seguir a %(username)s."
 
-#: app/main/routes.py:228 app/templates/base.html:192
+#: app/main/routes.py:228 app/templates/base.html:193
 #: app/templates/index.html:9
 msgid "Explore"
 msgstr "Explorar"
@@ -202,7 +202,7 @@ msgstr "Tu mensaje ha sido enviado."
 msgid "Send message"
 msgstr "Enviar mensaje"
 
-#: app/main/routes.py:313 app/templates/base.html:150
+#: app/main/routes.py:313 app/templates/base.html:151
 #: app/templates/messages.html:6
 msgid "Messages"
 msgstr "Mensajes"
@@ -252,27 +252,27 @@ msgstr "Siguiente"
 msgid "Welcome to Microblog!"
 msgstr "¡Bienvenido a Microblog!"
 
-#: app/templates/base.html:73
+#: app/templates/base.html:74
 msgid "Toggle navigation"
 msgstr "Desplegar navegación"
 
-#: app/templates/base.html:78
+#: app/templates/base.html:79
 msgid "Toggle Menu"
 msgstr "Mostrar/Ocultar menú"
 
-#: app/templates/base.html:100
+#: app/templates/base.html:101
 msgid "Toggle user menu"
 msgstr "Alternar menú de usuario"
 
-#: app/templates/base.html:125
+#: app/templates/base.html:126
 msgid "Signed in as"
 msgstr "Conectado como"
 
-#: app/templates/base.html:141
+#: app/templates/base.html:142
 msgid "Profile"
 msgstr "Mi perfil"
 
-#: app/templates/base.html:158
+#: app/templates/base.html:159
 msgid "Log Out"
 msgstr "Cerrar sesión"
 

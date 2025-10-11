@@ -38,7 +38,7 @@
     </ul>
 
     <div>
-        {% set btn_class = "py-1.5 px-2.5 inline-flex items-center gap-x-2 text-xs font-normal rounded-full border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" %}
+        {% set btn_class = "py-1.5 px-2.5 inline-flex items-center gap-x-2 cursor-pointer text-xs font-normal rounded-full border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" %}
         {% if user != current_user %}
         {% if not current_user.is_following(user) %}
         <form action="{{ url_for('main.follow', username=user.username) }}" method="post">
