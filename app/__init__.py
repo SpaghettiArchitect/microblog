@@ -68,6 +68,10 @@ def create_app(config_class=Config) -> Flask:
 
     app.register_blueprint(cli_bp)
 
+    from app.api import bp as api_bp
+
+    app.register_blueprint(api_bp, url_prefix="/api")
+
     # Logging configuration.
     if not app.debug and not app.testing:
         if app.config["MAIL_SERVER"]:
