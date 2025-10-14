@@ -83,6 +83,55 @@ class SearchableMixin:
 db.event.listen(db.session, "before_commit", SearchableMixin.before_commit)
 db.event.listen(db.session, "after_commit", SearchableMixin.after_commit)
 
+
+class PaginatedAPIMixin(object):
+    """A mixin that adds pagination capabilities to API responses."""
+
+    @staticmethod
+    def to_collection_dict(
+        query: sa.Select[Any], page: int, per_page: int, endpoint: str, **kwargs
+    ) -> dict[str, Any]:
+        """
+        Converts a SQLAlchemy query into a paginated collection dictionary suitable for API responses.
+
+        Args:
+            query (Select[Any]): The SQLAlchemy query to paginate.
+            page (int): The current page number.
+            per_page (int): The number of items per page.
+            endpoint (str): The endpoint name for URL generation.
+            **kwargs: Additional keyword arguments to pass to `url_for` for URL generation.
+
+        Returns:
+            data (dict[str, Any]): A dictionary containing paginated items, metadata, and navigation links.
+
+        The returned dictionary has the following structure:
+            - "items": List of serialized items for the current page.
+            - "_meta": Metadata about pagination (page, per_page, total_pages, total_items).
+            - "_links": URLs for self, next, and previous pages (if applicable).
+        """
+        resources = db.paginate(query, page=page, per_page=per_page, error_out=False)
+        data = {
+            "items": [item.to_dict() for item in resources.items],
+            "_meta": {
+                "page": page,
+                "per_page": per_page,
+                "total_pages": resources.pages,
+                "total_items": resources.total,
+            },
+            "_links": {
+                "self": url_for(endpoint, page=page, per_page=per_page, **kwargs),
+                "next": url_for(endpoint, page=page + 1, per_page=per_page, **kwargs)
+                if resources.has_next
+                else None,
+                "prev": url_for(endpoint, page=page - 1, per_page=per_page, **kwargs)
+                if resources.has_prev
+                else None,
+            },
+        }
+
+        return data
+
+
 # Association table that links a user with another user, to create a
 # follower-following many-to-many relationship.
 followers = sa.Table(
@@ -103,7 +152,7 @@ followers = sa.Table(
 )
 
 
-class User(UserMixin, db.Model):
+class User(PaginatedAPIMixin, UserMixin, db.Model):
     """Represents the User schema in the database.
     Each user is unique.
     """
