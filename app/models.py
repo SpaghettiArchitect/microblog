@@ -9,7 +9,7 @@ import redis
 import rq
 import sqlalchemy as sa
 import sqlalchemy.orm as so
-from flask import current_app
+from flask import current_app, url_for
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -290,6 +290,60 @@ class User(UserMixin, db.Model):
             Task.name == name, Task.complete == sa.false()
         )
         return db.session.scalar(query)
+
+    def posts_count(self) -> Union[int, None]:
+        """Return the number of posts made by the user."""
+        query = sa.select(sa.func.count()).select_from(self.posts.select().subquery())
+        return db.session.scalar(query)
+
+    def to_dict(self, include_email: bool = False) -> dict[str, Any]:
+        """Convert the user object to a dictionary representation.
+        If include_email is True, the email field is included in the output.
+
+        Args:
+            include_email (bool, optional): Whether to include the email field. Defaults to False.
+
+        Returns:
+            dict: A dictionary containing the user's data.
+        """
+        data = {
+            "id": self.id,
+            "username": self.username,
+            "last_seen": self.last_seen.replace(tzinfo=timezone.utc).isoformat()
+            if self.last_seen
+            else None,
+            "about_me": self.about_me,
+            "post_count": self.posts_count(),
+            "follower_count": self.followers_count(),
+            "following_count": self.following_count(),
+            "_links": {
+                "self": url_for("api.get_user", id=self.id),
+                "followers": url_for("api.get_followers", id=self.id),
+                "following": url_for("api.get_following", id=self.id),
+                "avatar": self.avatar(128),
+            },
+        }
+
+        if include_email:
+            data["email"] = self.email
+
+        return data
+
+    def from_dict(self, data: dict[str, Any], new_user: bool = False) -> None:
+        """Update the user object with data from a dictionary.
+        If new_user is True, the password field is also processed.
+
+        Args:
+            data (dict): A dictionary containing the user's data.
+            new_user (bool, optional): Whether the user is new and the password
+              should be set. Defaults to False.
+        """
+        for field in ["username", "email", "about_me"]:
+            if field in data:
+                setattr(self, field, data[field])
+
+        if new_user and "password" in data:
+            self.set_password(data["password"])
 
 
 class Post(SearchableMixin, db.Model):
