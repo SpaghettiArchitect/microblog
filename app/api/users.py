@@ -34,14 +34,43 @@ def get_users() -> dict[str, Any]:
 
 @bp.route("/users/<int:id>/followers", methods=["GET"])
 def get_followers(id: int):
-    """Return the followers of this user."""
-    pass
+    """Return the followers of a user.
+
+    Args:
+        id (int): The ID of the user whose followers are to be retrieved.
+    Returns:
+        followers (dict[str, Any]): A dictionary containing the paginated followers."""
+    user = db.get_or_404(User, id)
+    page = request.args.get("page", 1, type=int)
+    per_page = min(request.args.get("per_page", 10, type=int), 100)
+    return User.to_collection_dict(
+        query=user.followers.select(),
+        page=page,
+        per_page=per_page,
+        endpoint="api.get_followers",
+        id=id,
+    )
 
 
 @bp.route("/users/<int:id>/following", methods=["GET"])
 def get_following(id: int):
-    """Return the users this user is following."""
-    pass
+    """Return the users this user is following.
+
+    Args:
+        id (int): The ID of the user whose followings are to be retrieved.
+    Returns:
+        following (dict[str, Any]): A dictionary containing the paginated followings.
+    """
+    user = db.get_or_404(User, id)
+    page = request.args.get("page", 1, type=int)
+    per_page = min(request.args.get("per_page", 10, type=int), 100)
+    return User.to_collection_dict(
+        query=user.following.select(),
+        page=page,
+        per_page=per_page,
+        endpoint="api.get_following",
+        id=id,
+    )
 
 
 @bp.route("/users", methods=["POST"])
