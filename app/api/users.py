@@ -1,5 +1,8 @@
 from typing import Any
 
+import sqlalchemy as sa
+from flask import request
+
 from app import db
 from app.api import bp
 from app.models import User
@@ -18,9 +21,15 @@ def get_user(id: int) -> dict[str, Any]:
 
 
 @bp.route("/users", methods=["GET"])
-def get_users():
-    """Return the collection of all users."""
-    pass
+def get_users() -> dict[str, Any]:
+    """Return the collection of all users in a paginated format.
+
+    Returns:
+        users (dict[str, Any]): A dictionary containing the paginated users.
+    """
+    page = request.args.get("page", 1, type=int)
+    per_page = min(request.args.get("per_page", 10, type=int), 100)
+    return User.to_collection_dict(sa.select(User), page, per_page, "api.get_users")
 
 
 @bp.route("/users/<int:id>/followers", methods=["GET"])
