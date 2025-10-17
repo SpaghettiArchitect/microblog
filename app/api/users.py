@@ -1,10 +1,20 @@
+from typing import Any
+
+from app import db
 from app.api import bp
+from app.models import User
 
 
 @bp.route("/users/<int:id>", methods=["GET"])
-def get_user(id: int):
-    """Return a user."""
-    pass
+def get_user(id: int) -> dict[str, Any]:
+    """Return a user as a dictionary if found, 404 error otherwise.
+
+    Args:
+        id (int): The ID of the user to retrieve.
+    Returns:
+        user (dict[str, Any]): A dictionary representation of the user.
+    """
+    return db.get_or_404(User, id).to_dict()
 
 
 @bp.route("/users", methods=["GET"])

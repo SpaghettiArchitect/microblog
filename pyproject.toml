@@ -25,4 +25,5 @@ dependencies = [
 [dependency-groups]
 dev = [
     "aiosmtpd>=1.4.6",
+    "httpie>=3.2.4",
 ]
