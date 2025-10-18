@@ -1,10 +1,11 @@
-from typing import Any
+from typing import Any, Literal, Union
 
 import sqlalchemy as sa
-from flask import request
+from flask import request, url_for
 
 from app import db
 from app.api import bp
+from app.api.errors import bad_request
 from app.models import User
 
 
@@ -74,9 +75,34 @@ def get_following(id: int):
 
 
 @bp.route("/users", methods=["POST"])
-def create_user():
-    """Register a new user account."""
-    pass
+def create_user() -> Union[
+    tuple[dict[str, str], Literal[400]], tuple[dict[str, Any], int, dict[str, str]]
+]:
+    """
+    Create a new user from JSON request data. Validates that `username`, `email`, and `password` fields are present
+    and that the `username` and `email` are unique.
+
+    Returns:
+    - On success, returns a tuple containing the user dictionary, HTTP status code 201, and Location header.
+    - On failure, returns a tuple containing an error message dictionary and HTTP status code 400.
+    """
+    data = request.get_json()
+
+    if "username" not in data or "email" not in data or "password" not in data:
+        return bad_request("must include username, email and password fields")
+
+    if db.session.scalar(sa.select(User).where(User.username == data["username"])):
+        return bad_request("please use a different username")
+
+    if db.session.scalar(sa.select(User).where(User.email == data["email"])):
+        return bad_request("please use a different email address")
+
+    user = User()
+    user.from_dict(data, new_user=True)
+    db.session.add(user)
+    db.session.commit()
+
+    return user.to_dict(), 201, {"Location": url_for("api.get_user", id=user.id)}
 
 
 @bp.route("/users/<int:id>", methods=["PUT"])
