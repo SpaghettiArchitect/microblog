@@ -106,6 +106,37 @@ def create_user() -> Union[
 
 
 @bp.route("/users/<int:id>", methods=["PUT"])
-def update_user(id: int):
-    """Modify a user."""
-    pass
+def update_user(id: int) -> Union[tuple[dict[str, str], Literal[400]], dict[str, Any]]:
+    """Modify a user. Validates that if `username` or `email` fields are being updated, they remain unique.
+
+    Args:
+        id (int): The ID of the user to update.
+
+    Returns:
+    - On success, returns the updated user dictionary.
+    - On failure, returns a tuple containing an error message dictionary and HTTP status code 400.
+    """
+    user = db.get_or_404(User, id)
+    data = request.get_json()
+
+    if (
+        "username" in data
+        and data["username"] != user.username
+        and db.session.scalar(
+            sa.select(User).where(User.username == data["username"], User.id != id)
+        )
+    ):
+        return bad_request("please use a different username")
+
+    if (
+        "email" in data
+        and data["email"] != user.email
+        and db.session.scalar(
+            sa.select(User).where(User.email == data["email"], User.id != id)
+        )
+    ):
+        return bad_request("please use a different email address")
+
+    user.from_dict(data, new_user=False)
+    db.session.commit()
+    return user.to_dict()

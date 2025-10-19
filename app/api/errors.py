@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Literal, Optional
 
 from werkzeug.exceptions import HTTPException
 from werkzeug.http import HTTP_STATUS_CODES
@@ -27,7 +27,7 @@ def error_response(
     return payload, status_code
 
 
-def bad_request(message: str) -> tuple[dict[str, str], int]:
+def bad_request(message: str) -> tuple[dict[str, str], Literal[400]]:
     """Generate a 400 Bad Request error response. This is the most common error response."""
     return error_response(400, message)
 
