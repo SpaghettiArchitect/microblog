@@ -1,15 +1,17 @@
 from typing import Any, Literal, Union
 
 import sqlalchemy as sa
-from flask import request, url_for
+from flask import abort, request, url_for
 
 from app import db
 from app.api import bp
+from app.api.auth import token_auth
 from app.api.errors import bad_request
 from app.models import User
 
 
 @bp.route("/users/<int:id>", methods=["GET"])
+@token_auth.login_required
 def get_user(id: int) -> dict[str, Any]:
     """Return a user as a dictionary if found, 404 error otherwise.
 
@@ -22,6 +24,7 @@ def get_user(id: int) -> dict[str, Any]:
 
 
 @bp.route("/users", methods=["GET"])
+@token_auth.login_required
 def get_users() -> dict[str, Any]:
     """Return the collection of all users in a paginated format.
 
@@ -34,6 +37,7 @@ def get_users() -> dict[str, Any]:
 
 
 @bp.route("/users/<int:id>/followers", methods=["GET"])
+@token_auth.login_required
 def get_followers(id: int):
     """Return the followers of a user.
 
@@ -54,6 +58,7 @@ def get_followers(id: int):
 
 
 @bp.route("/users/<int:id>/following", methods=["GET"])
+@token_auth.login_required
 def get_following(id: int):
     """Return the users this user is following.
 
@@ -106,6 +111,7 @@ def create_user() -> Union[
 
 
 @bp.route("/users/<int:id>", methods=["PUT"])
+@token_auth.login_required
 def update_user(id: int) -> Union[tuple[dict[str, str], Literal[400]], dict[str, Any]]:
     """Modify a user. Validates that if `username` or `email` fields are being updated, they remain unique.
 
@@ -116,6 +122,10 @@ def update_user(id: int) -> Union[tuple[dict[str, str], Literal[400]], dict[str,
     - On success, returns the updated user dictionary.
     - On failure, returns a tuple containing an error message dictionary and HTTP status code 400.
     """
+    # Ensure the authenticated user is the one being updated. A user can only update their own information.
+    if token_auth.current_user().id != id:
+        abort(403)
+
     user = db.get_or_404(User, id)
     data = request.get_json()
 
