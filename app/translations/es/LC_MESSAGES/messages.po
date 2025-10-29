@@ -7,18 +7,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-10 23:25-0600\n"
-"PO-Revision-Date: 2025-10-08 00:06-0600\n"
+"POT-Creation-Date: 2025-10-28 20:03-0600\n"
+"PO-Revision-Date: 2025-10-28 20:06-0600\n"
 "Last-Translator: \n"
-"Language: es\n"
 "Language-Team: es <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Generated-By: Babel 2.17.0\n"
+"X-Generator: Poedit 3.8\n"
 
-#: app/__init__.py:23
+#: app/__init__.py:25
 msgid "Please sign in to access this page."
 msgstr "Por favor, inicia sesión para acceder a esta página."
 
@@ -142,7 +143,7 @@ msgstr "Comparte algo..."
 msgid "Post"
 msgstr "Publicar"
 
-#: app/main/forms.py:64 app/main/routes.py:261
+#: app/main/forms.py:64 app/main/routes.py:264
 msgid "Search"
 msgstr "Buscar"
 
@@ -158,60 +159,68 @@ msgstr "¡Tu publicación ya está disponible!"
 msgid "Home"
 msgstr "Inicio"
 
-#: app/main/routes.py:151
+#: app/main/routes.py:154
 msgid "Your changes have been saved."
 msgstr "Tus cambios han sido guardados."
 
-#: app/main/routes.py:159
+#: app/main/routes.py:162
 msgid "Edit Profile"
 msgstr "Actualizar perfil"
 
-#: app/main/routes.py:171 app/main/routes.py:196
+#: app/main/routes.py:174 app/main/routes.py:199
 #, python-format
 msgid "User %(username)s not found."
 msgstr "El usuario %(username)s no existe."
 
-#: app/main/routes.py:174
+#: app/main/routes.py:177
 msgid "You cannot follow yourself!"
 msgstr "¡No puedes seguirte a ti mismo!"
 
-#: app/main/routes.py:180
+#: app/main/routes.py:183
 #, python-format
 msgid "You are now following %(username)s!"
 msgstr "¡Ahora sigues a %(username)s!"
 
-#: app/main/routes.py:199
+#: app/main/routes.py:202
 msgid "You cannot unfollow yourself!"
 msgstr "¡No puedes dejar de seguirte a ti mismo!"
 
-#: app/main/routes.py:205
+#: app/main/routes.py:208
 #, python-format
 msgid "You stopped following %(username)s."
 msgstr "Dejaste de seguir a %(username)s."
 
-#: app/main/routes.py:228 app/templates/base.html:193
+#: app/main/routes.py:231 app/templates/base.html:193
 #: app/templates/index.html:9
 msgid "Explore"
 msgstr "Explorar"
 
-#: app/main/routes.py:280
+#: app/main/routes.py:283
 msgid "Your message has been sent."
 msgstr "Tu mensaje ha sido enviado."
 
-#: app/main/routes.py:284
+#: app/main/routes.py:287
 msgid "Send message"
 msgstr "Enviar mensaje"
 
-#: app/main/routes.py:313 app/templates/base.html:151
+#: app/main/routes.py:316 app/templates/base.html:151
 #: app/templates/messages.html:6
 msgid "Messages"
 msgstr "Mensajes"
 
-#: app/main/routes.py:325
+#: app/main/routes.py:331
+msgid ""
+"Cannot export posts because the Redis server is not connected. Please try "
+"again later."
+msgstr ""
+"No se pueden exportar mensajes porque el servidor Redis no está conectado. "
+"Vuelva a intentarlo más tarde."
+
+#: app/main/routes.py:338
 msgid "An export task is currently in progress"
 msgstr "Hay una tarea de exportación en curso"
 
-#: app/main/routes.py:327
+#: app/main/routes.py:340
 msgid "Exporting posts..."
 msgstr "Exportando publicaciones..."
 
@@ -431,11 +440,11 @@ msgstr "de click aquí"
 
 #: app/templates/email/reset_password.html:17
 msgid ""
-"Alternatively, you can paste the following link in your browser's address"
-" bar:"
+"Alternatively, you can paste the following link in your browser's address "
+"bar:"
 msgstr ""
-"Si lo prefiere, puede pegar el siguiente enlace en la barra de "
-"direcciones de su navegador:"
+"Si lo prefiere, puede pegar el siguiente enlace en la barra de direcciones "
+"de su navegador:"
 
 #: app/templates/email/reset_password.html:21
 #: app/templates/email/reset_password.txt:7
@@ -468,12 +477,12 @@ msgstr "Volver al inicio"
 
 #: app/templates/errors/500.html:6
 msgid ""
-"The server encountered an internal error or misconfiguration and was "
-"unable to make your request. The administrator has been notified."
+"The server encountered an internal error or misconfiguration and was unable "
+"to make your request. The administrator has been notified."
 msgstr ""
 "El servidor ha experimentado un error interno o una configuración "
-"incorrecta y no ha podido completar tu solicitud. El administrador ha "
-"sido notificado."
+"incorrecta y no ha podido completar tu solicitud. El administrador ha sido "
+"notificado."
 
 #~ msgid "Done"
 #~ msgstr "Listo"
@@ -492,4 +501,3 @@ msgstr ""
 
 #~ msgid "Please find attached the archive of your posts that you requested."
 #~ msgstr "Le adjuntamos el archivo de sus mensajes que solicitó."
-

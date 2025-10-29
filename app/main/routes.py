@@ -117,6 +117,8 @@ def user(username: str) -> str:
 
     form = EmptyForm()  # Form to follow/unfollow the user.
 
+    redis_server_connected = current_app.redis_status["connected"]
+
     return render_template(
         "user.html",
         user=user,
@@ -125,6 +127,7 @@ def user(username: str) -> str:
         next_url=next_url,
         prev_url=prev_url,
         form=form,
+        redis_server_connected=redis_server_connected,
     )
 
 
@@ -321,6 +324,16 @@ def messages() -> str:
 @login_required
 def export_posts() -> Response:
     """Start the task to export the user's posts."""
+    # Check if the Redis server is connected.
+    if not current_app.redis_status["connected"]:
+        flash(
+            _(
+                "Cannot export posts because the Redis server is not connected. "
+                "Please try again later."
+            )
+        )
+        return redirect(url_for("main.user", username=current_user.username))
+
     if current_user.get_task_in_progress("export_posts"):
         flash(_("An export task is currently in progress"))
     else:

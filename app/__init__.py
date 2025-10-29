@@ -1,6 +1,7 @@
 import logging
 from logging.handlers import RotatingFileHandler, SMTPHandler
 from pathlib import Path
+from typing import List, TypedDict
 
 import rq
 from elasticsearch import Elasticsearch
@@ -13,6 +14,7 @@ from flask_migrate import Migrate
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from redis import Redis
+from redis.exceptions import ConnectionError, TimeoutError
 
 from config import Config
 
@@ -29,6 +31,45 @@ babel = Babel()
 def get_locale() -> None:
     """Determine the best match with our supported languages."""
     return request.accept_languages.best_match(current_app.config["LANGUAGES"])
+
+
+class RedisConnectionInfo(TypedDict):
+    """TypedDict for Redis connection information."""
+
+    connected: bool
+    attempts: int
+    errors: List[str]
+
+
+def check_redis_connection(
+    redis_client: Redis, max_retries: int = 3
+) -> RedisConnectionInfo:
+    """Check the connection to the Redis server with retries.
+
+    Args:
+        redis_client (Redis): The Redis client instance.
+        max_retries (int): Maximum number of connection attempts. Default is 3.
+
+    Returns:
+        RedisConnectionInfo: Information about the connection status.
+    """
+    connection_info: RedisConnectionInfo = {
+        "connected": False,
+        "attempts": 0,
+        "errors": [],
+    }
+
+    for attempt in range(max_retries):
+        connection_info["attempts"] += 1
+        try:
+            redis_client.ping()
+            connection_info["connected"] = True
+            return connection_info
+        except (ConnectionError, TimeoutError) as e:
+            connection_info["errors"].append(str(e))
+            if attempt == max_retries - 1:
+                return connection_info
+    return connection_info
 
 
 def create_app(config_class=Config) -> Flask:
@@ -49,6 +90,7 @@ def create_app(config_class=Config) -> Flask:
         else None
     )
     app.redis = Redis.from_url(app.config["REDIS_URL"])
+    app.redis_status = check_redis_connection(app.redis)
     app.task_queue = rq.Queue("microblog-tasks", connection=app.redis)
 
     # Registration of blueprints.
@@ -112,6 +154,15 @@ def create_app(config_class=Config) -> Flask:
 
         app.logger.setLevel(logging.INFO)
         app.logger.info("Microblog startup")
+
+        if app.redis_status["connected"]:
+            app.logger.info("Redis server connected successfully")
+        else:
+            app.logger.error(
+                "Redis connection failed after %s attempts with errors: %s",
+                app.redis_status["attempts"],
+                app.redis_status["errors"],
+            )
 
     return app
 
